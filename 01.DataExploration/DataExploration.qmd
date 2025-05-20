@@ -1,0 +1,48 @@
+---
+title: "Data Exploration"
+format: html
+editor: visual
+---
+
+## Data Exploration
+
+Load the packages. If not installed please install first.
+
+Overview of data
+
+``` {r}
+library(foreign)
+library(dplyr)
+
+
+W01 <- read.spss("00.Data/01. covid-19_wave1_survey_cls.sav", to.data.frame = TRUE)
+summary(W01)
+head(W01)
+
+W02 <- read.spss("00.Data/02. covid-19_wave2_survey_cls.sav", to.data.frame = TRUE)
+summary(W02)
+head(W02)
+
+W03 <- read.spss("00.Data/03. covid-19_wave3_survey_cls.sav", to.data.frame = TRUE)
+summary(W03)
+head(W03)
+
+```
+
+
+### Select Relevant Rows 
+
+The study looks into the participants with long-standing illness 
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
