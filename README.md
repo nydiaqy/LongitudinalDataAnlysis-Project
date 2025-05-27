@@ -26,3 +26,14 @@ Do certain types of long-term illness — especially psychological conditions (e
 - Physical – chronic but stable (e.g. asthma, diabetes)
 - Physical – potentially life-threatening (e.g. cancer)
 - No long-term illness (control group)
+
+### Presentation Component
+Rational 
+RQs
+Hypothesis
+Limitations
+Bibiliography 
+Collaborative frameworks
+Pictures 
+Model 
+Varible 
