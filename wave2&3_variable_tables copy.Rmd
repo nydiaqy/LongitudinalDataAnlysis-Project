@@ -1,0 +1,121 @@
+---
+title: "Wave 2 and 3"
+output: html_document
+date: "2025-06-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(haven)
+# Load SPSS data
+W02 <- read_sav("/Users/lisiyi/Desktop/LDAP/SiyiQiaoyu-Project/00.Data/02. covid-19_wave2_survey_cls.sav", user_na = TRUE)
+```
+## Wave 2
+
+**Wave 2** Variable Table
+
+| Type       | Variable Acronym       | Explanation |
+|------------|------------------------|-------------|
+| Demo       | CW2_PSEX               | Sex of Respondent |
+| Mod_Cov    | CW2_COVIDSYMPT_1       | Past 2 weeks COVID19 symptoms: Fever |
+| Mod_Cov    | CW2_COVIDSYMPT_2       | Past 2 weeks COVID19 symptoms: Cough - dry |
+| DV_WEMWBS  | CW2_WEMWBS_1           | feeling optimistic about the future |
+|            | CW2_WEMWBS_2           | feeling useful |
+|            | CW2_WEMWBS_3           | feeling relaxed |
+|            | CW2_WEMWBS_4           | dealing with problems well |
+|            | CW2_WEMWBS_5           | thinking clearly |
+|            | CW2_WEMWBS_6           | feeling close to other people |
+|            | CW2_WEMWBS_7           | able to make up my own mind about things |
+| DV_GAD     | CW2_GAD2PHQ2_1         | Feeling Nervous, Anxious Or On Edge |
+|            | CW2_GAD2PHQ2_2         | Not Being Able To Stop Or Control Worrying |
+|            | CW2_GAD2PHQ2_3         | Little Interest Or Pleasure In Doing Things |
+|            | CW2_GAD2PHQ2_4         | Feeling Down, Depressed Or Hopeless |
+| DV_RPTT    | CW2_RISK               | willingness to take risks from 0 (Never) to 10 (Always) |
+|            | CW2_PATIENT            | how patient respondent is from 0 (Never) to 10 (Always) |
+|            | CW2_TRUST              | how trusting of others from 0 (Not at all) to 10 (Extremely) |
+|            | CW2_TRUSTPOLP          | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
+
+```{r}
+library(dplyr)
+
+W02_A <- W02 %>%
+  select(
+    CW2_PSEX,
+    CW2_COVIDSYMPT_1, CW2_COVIDSYMPT_2, CW2_COVIDSYMPT_3, CW2_COVIDSYMPT_4,
+    CW2_COVIDSYMPT_5, CW2_COVIDSYMPT_6, CW2_COVIDSYMPT_7, CW2_COVIDSYMPT_8,
+    CW2_COVIDSYMPT_18, CW2_COVIDSYMPT_10, CW2_COVIDSYMPT_11, CW2_COVIDSYMPT_12,
+    CW2_COVIDSYMPT_16, CW2_COVIDSYMPT_13, CW2_COVIDSYMPT_14, CW2_COVIDSYMPT_17,
+    CW2_COVIDSYMPT_19, CW2_COVIDSYMPT_20, CW2_COVIDSYMPT_23,
+    CW2_PHDE, CW2_PHHO, CW2_PHRF, CW2_PHEE, CW2_PHWO, CW2_PHNE, CW2_HARM,
+    matches("^CW2_LLI_([1-9]|1[0-7])$"),
+    matches("^CW2_LONELY_([1-4])$"),
+    matches("^CW2_WEMWBS_([1-7])$"),
+    matches("^CW2_GHQ12([1-9]|1[0-2])$"),
+    matches("^CW2_GAD2PHQ2_([1-4])$"),
+    CW2_RISK, CW2_PATIENT, CW2_TRUST, CW2_TRUSTPOLP
+  )
+```
+## Wave 3
+
+**Wave 3** Variable Table
+
+| Type       | Variable Acronym       | Explanation |
+|------------|------------------------|-------------|
+| Demo       | CW3_PSEX               | Sex of Respondent |
+| Mod_Cov    | CW3_COVIDSYMPT_1       | Past 2 weeks COVID19 symptoms: Fever |
+| Mod_Cov    | CW3_COVIDSYMPT_2       | Past 2 weeks COVID19 symptoms: Cough - dry |
+| DV_WEMWBS  | CW3_WEMWBS_1           | feeling optimistic about the future |
+|            | CW3_WEMWBS_2           | feeling useful |
+|            | CW3_WEMWBS_3           | feeling relaxed |
+|            | CW3_WEMWBS_4           | dealing with problems well |
+|            | CW3_WEMWBS_5           | thinking clearly |
+|            | CW3_WEMWBS_6           | feeling close to other people |
+|            | CW3_WEMWBS_7           | able to make up my own mind about things |
+| DV_MALAISE | CW3_MALAISE_1          | feel tired most of the time |
+|            | CW3_MALAISE_2          | feel miserable or depressed |
+|            | CW3_MALAISE_3          | get worried about things |
+|            | CW3_MALAISE_4          | get in a violent rage |
+|            | CW3_MALAISE_5          | suddenly become scared for no good reason |
+|            | CW3_MALAISE_6          | easily upset or irritated |
+|            | CW3_MALAISE_7          | constantly keyed up and jittery |
+|            | CW3_MALAISE_8          | every little thing gets on your nerves and wears you out |
+|            | CW3_MALAISE_9          | heart often races like mad |
+| DV_GAD     | CW3_GAD2PHQ2_1         | Feeling Nervous, Anxious Or On Edge |
+|            | CW3_GAD2PHQ2_2         | Not Being Able To Stop Or Control Worrying |
+|            | CW3_GAD2PHQ2_3         | Little Interest Or Pleasure In Doing Things |
+|            | CW3_GAD2PHQ2_4         | Feeling Down, Depressed Or Hopeless |
+| DV_RPTT    | CW3_RISK               | willingness to take risks from 0 (Never) to 10 (Always) |
+|            | CW3_PATIENT            | how patient respondent is from 0 (Never) to 10 (Always) |
+|            | CW3_TRUST              | how trusting of others from 0 (Not at all) to 10 (Extremely) |
+|            | CW3_TRUSTPOLP          | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
+
+```{r}
+W03_A <- W03 %>%
+  select(
+    CW3_PSEX,
+    CW3_COVIDSYMPT_1, CW3_COVIDSYMPT_2, CW3_COVIDSYMPT_3, CW3_COVIDSYMPT_4,
+    CW3_COVIDSYMPT_5, CW3_COVIDSYMPT_6, CW3_COVIDSYMPT_7, CW3_COVIDSYMPT_8,
+    CW3_COVIDSYMPT_18, CW3_COVIDSYMPT_10, CW3_COVIDSYMPT_11, CW3_COVIDSYMPT_12,
+    CW3_COVIDSYMPT_16, CW3_COVIDSYMPT_13, CW3_COVIDSYMPT_14, CW3_COVIDSYMPT_17,
+    CW3_COVIDSYMPT_19, CW3_COVIDSYMPT_20, CW3_COVIDSYMPT_23,
+    
+    CW3_PHDE, CW3_PHHO, CW3_PHRF, CW3_PHEE, CW3_PHWO, CW3_PHNE, CW3_HARM,
+    
+    matches("^CW3_LLI_([1-9]|1[0-7])$"),
+    matches("^CW3_LONELY_([1-4])$"),
+    
+    matches("^CW3_WEMWBS_([1-7])$"),
+    matches("^CW3_MALAISE_([1-9])$"),
+    matches("^CW3_GAD2PHQ2_([1-4])$"),
+    
+    CW3_RISK, CW3_PATIENT, CW3_TRUST, CW3_TRUSTPOLP
+  )
+```
+
+
+```{r}
+library(haven)
+
+test <- read_sav("/Users/lisiyi/Desktop/LDAP/SiyiQiaoyu-Project/00.Data/02. covid-19_wave2_survey_cls.sav")
+```
