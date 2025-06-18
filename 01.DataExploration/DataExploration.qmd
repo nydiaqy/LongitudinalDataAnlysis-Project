@@ -42,7 +42,7 @@ The study looks into the participants with long-standing illness. Hence the foll
 **Wave 1** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|---------------|---------------|------------------------------------------|
+|----|----|----|
 | Demo | CW1_PSEX | Sex of Respondent |
 | Mod_Cov | CW1_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW1_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
