@@ -1,0 +1,381 @@
+---
+title: "Data Exploration"
+format: html
+editor: visual
+---
+
+## Data Exploration
+
+Load the packages. If not installed please install first.
+
+Overview of data
+
+```{r, include=FALSE}
+library(foreign)
+library(dplyr)
+
+
+W01 <- read.spss("../00.Data/01. covid-19_wave1_survey_cls.sav", to.data.frame = TRUE)
+summary(W01)
+head(W01)
+
+W02 <- read.spss("../00.Data/02. covid-19_wave2_survey_cls.sav", to.data.frame = TRUE)
+summary(W02)
+head(W02)
+
+W03 <- read.spss("../00.Data/03. covid-19_wave3_survey_cls.sav", to.data.frame = TRUE)
+summary(W03)
+head(W03)
+
+```
+
+### Select Relevant Rows
+
+The study looks into the participants with long-standing illness. Hence the following variable will be selected.
+
+\*Demo = Demographic information Acronym
+
+\*Mod\_ = Moderator
+
+## Wave 1
+
+**Wave 1** Variable Table
+
+| Type | Variable Acronym | Explanation |
+|------------------------|------------------------|------------------------|
+| Demo | CW1_PSEX | Sex of Respondent |
+| Mod_Cov | CW1_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
+| Mod_Cov | CW1_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
+| Mod_Cov | CW1_COVIDSYMPT_3 | Past 2 weeks COVID19 symptoms: Cough - mucus or phlegm |
+| Mod_Cov | CW1_COVIDSYMPT_4 | Past 2 weeks COVID19 symptoms: Sore throat |
+| Mod_Cov | CW1_COVIDSYMPT_5 | Past 2 weeks COVID19 symptoms: Chest tightness |
+| Mod_Cov | CW1_COVIDSYMPT_6 | Past 2 weeks COVID19 symptoms: Shortness of breath |
+| Mod_Cov | CW1_COVIDSYMPT_7 | Past 2 weeks COVID19 symptoms: Runny nose |
+| Mod_Cov | CW1_COVIDSYMPT_8 | Past 2 weeks COVID19 symptoms: Nasal congestion |
+| Mod_Cov | CW1_COVIDSYMPT_18 | Past 2 weeks COVID19 symptoms: Sneezing |
+| Mod_Cov | CW1_COVIDSYMPT_10 | Past 2 weeks COVID19 symptoms: Muscle or body aches |
+| Mod_Cov | CW1_COVIDSYMPT_11 | Past 2 weeks COVID19 symptoms: Fatigue |
+| Mod_Cov | CW1_COVIDSYMPT_12 | Past 2 weeks COVID19 symptoms: Unusual loose motions or diarrhoea |
+| Mod_Cov | CW1_COVIDSYMPT_16 | Past 2 weeks COVID19 symptoms: Vomiting |
+| Mod_Cov | CW1_COVIDSYMPT_13 | Past 2 weeks COVID19 symptoms: Loss of smell |
+| Mod_Cov | CW1_COVIDSYMPT_14 | Past 2 weeks COVID19 symptoms: Loss of taste |
+| Mod_Cov | CW1_COVIDSYMPT_17 | Past 2 weeks COVID19 symptoms: Skin rash |
+| Mod_Cov | CW1_COVIDSYMPT_19 | Past 2 weeks COVID19 symptoms: Headaches |
+| Mod_Cov | CW1_COVIDSYMPT_20 | Past 2 weeks COVID19 symptoms: Other |
+| Mod_Cov | CW1_COVIDSYMPT_23 | Past 2 weeks no COVID19 symptoms experienced |
+| Mod_Health | CW1_GHQ | Post-C19: Respondent self-assessment of general health |
+| Mod_Health | CW1_GHQPRECOVID | Pre-C19: Respondent self-assessment of general health in 3 months preceding outbreak |
+| IV | CW1_LLI_1 | long-standing illness 1: Cancer |
+|  | CW1_LLI_2 | long-standing illness: Cystic fibrosis |
+|  | CW1_LLI_3 | long-standing illness: Asthma |
+|  | CW1_LLI_4 | long-standing illness: Chronic Obstructive Pulmonary Disease |
+|  | CW1_LLI_5 | long-standing illness: Wheezy bronchitis |
+|  | CW1_LLI_6 | long-standing illness: Diabetes |
+|  | CW1_LLI_7 | long-standing illness: Recurrent backache/prolapsed disc/sciatica/other back probm |
+|  | CW1_LLI_8 | long-standing illness: Problems with hearing |
+|  | CW1_LLI_9 | long-standing illness: High blood pressure |
+|  | CW1_LLI_10 | long-standing illness: Heart disease, congenital or acquired |
+|  | CW1_LLI_11 | long-standing illness: Depression or other emotional/nervous/psychiatric probs |
+|  | CW1_LLI_12 | long-standing illness: Obesity |
+|  | CW1_LLI_13 | long-standing illness: Chronic Obstructive Airways Disease |
+|  | CW1_LLI_14 | long-standing illness: Infection |
+|  | CW1_LLI_15 | long-standing illness: HIV/Immunodeficiency |
+|  | CW1_LLI_16 | long-standing illness: Conditions affecting the brain and nerves |
+|  | CW1_LLI_17 | Respondent suffering from a long-standing illness: |
+| Mod_Lonely | CW1_LONELY_1 | How often - lack companionship |
+|  | CW1_LONELY_2 | How often - left out |
+|  | CW1_LONELY_3 | How often - isolated from others |
+|  | CW1_LONELY_4 | How often - lonely |
+| DV_Kessler6 | CW1_PHDE | Felt depressed |
+|  | CW1_PHHO | felt hopeless |
+|  | CW1_PHRF | felt restless |
+|  | CW1_PHEE | felt everything was an effort |
+|  | CW1_PHWO | felt worthless |
+|  | CW1_PHNE | felt nervous |
+|  | CW1_HARM | has harmed self on purpose |
+| DV_WEMWBS | CW1_WEMWBS_1 | feeling optimistic about the future |
+|  | CW1_WEMWBS_2 | feeling useful |
+|  | CW1_WEMWBS_3 | feeling relaxed |
+|  | CW1_WEMWBS_4 | dealing with problems well |
+|  | CW1_WEMWBS_5 | thinking clearly |
+|  | CW1_WEMWBS_6 | thinking close to other people |
+|  | CW1_WEMWBS_7 | able to make up my own mind about things |
+| DV_MALAISE | CW1_MALAISE_1 | feel tired most of the time |
+|  | CW1_MALAISE_2 | feel miserable or depressed |
+|  | CW1_MALAISE_3 | get worried about things |
+|  | CW1_MALAISE_4 | get in a violent rage |
+|  | CW1_MALAISE_5 | suddenly become scared for no good reason |
+|  | CW1_MALAISE_6 | easily upset or irritated |
+|  | CW1_MALAISE_7 | constantly keyed up and jittery |
+|  | CW1_MALAISE_8 | every little thing get on your nerves and wear you out |
+|  | CW1_MALAISE_9 | heart often race like mad |
+| DV_GHQ | CW1_GHQ121 | able to concentrate |
+|  | CW1_GHQ122 | lost much sleep over worry |
+|  | CW1_GHQ123 | felt that playing a useful part in things |
+|  | CW1_GHQ124 | felt capable of making decisions about things |
+|  | CW1_GHQ125 | felt constantly under strain |
+|  | CW1_GHQ126 | couldn’t overcome difficulties |
+|  | CW1_GHQ127 | able to enjoy normal day to day activities |
+|  | CW1_GHQ128 | able to face up to problems |
+|  | CW1_GHQ129 | feeling unhappy or depressed |
+|  | CW1_GHQ1210 | losing confidence in self |
+|  | CW1_GHQ1211 | thinking of self as a worthless person |
+|  | CW1_GHQ1212 | feeling reasonably happy |
+| DV_GAD | CW1_GAD2PHQ2_1 | Feeling Nervous, Anxious Or On Edge |
+|  | CW1_GAD2PHQ2_2 | Not Being Able To Stop Or Control Worrying |
+|  | CW1_GAD2PHQ2_3 | Little Interest Or Pleasure In Doing Things |
+|  | CW1_GAD2PHQ2_4 | Feeling Down, Depressed Or Hopeless |
+| DV_RPTT | CW1_RISK | willingness to take risks from 0 (Never) to 10 (Always) |
+|  | CW1_PATIENT | how patient Respondent is from 0 (Never) to 10 (Always) |
+|  | CW1_TRUST | how trusting of others from 0 (Not at all) to 10 (Extremely) |
+|  | CW1_TRUSTPOLP | how trusting of Govmnt from 0 (Not at all) to 10 (Extremely) |
+
+### Select rows from the Wave 1 dataset
+
+```{r, include=FALSE}
+
+library(dplyr)
+
+W01_A <- W01 %>%
+  select(
+    NCDSID, CW1_PSEX,
+    CW1_COVIDSYMPT_1, CW1_COVIDSYMPT_2, CW1_COVIDSYMPT_3, CW1_COVIDSYMPT_4,
+    CW1_COVIDSYMPT_5, CW1_COVIDSYMPT_6, CW1_COVIDSYMPT_7, CW1_COVIDSYMPT_8,
+    CW1_COVIDSYMPT_18, CW1_COVIDSYMPT_10, CW1_COVIDSYMPT_11, CW1_COVIDSYMPT_12,
+    CW1_COVIDSYMPT_16, CW1_COVIDSYMPT_13, CW1_COVIDSYMPT_14, CW1_COVIDSYMPT_17,
+    CW1_COVIDSYMPT_19, CW1_COVIDSYMPT_20, CW1_COVIDSYMPT_23,
+    CW1_GHQ, CW1_GHQPRECOVID,
+    
+    matches("^CW1_LLI_([1-9]|1[0-7])$"),
+    matches("^CW1_LONELY_([1-4])$"),
+    
+    CW1_PHDE, CW1_PHHO, CW1_PHRF, CW1_PHEE, CW1_PHWO, CW1_PHNE,
+    CW1_HARM,
+    
+    matches("^CW1_WEMWBS_([1-7])$"),
+    matches("^CW1_MALAISE_([1-9]|1[0-9])$"),
+    matches("^CW1_GHQ12([1-9]|1[0-2])$"),
+    matches("^CW1_GAD2PHQ2_([1-4])$"),
+    
+    CW1_RISK, CW1_PATIENT, CW1_TRUST, CW1_TRUSTPOLP
+  )
+```
+
+## Wave 2
+
+**Wave 2** Variable Table
+
+| Type | Variable Acronym | Explanation |
+|------------------------|------------------------|------------------------|
+| Demo | CW2_PSEX | Sex of Respondent |
+| Mod_Cov | CW2_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
+| Mod_Cov | CW2_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
+| DV_WEMWBS | CW2_WEMWBS_1 | feeling optimistic about the future |
+|  | CW2_WEMWBS_2 | feeling useful |
+|  | CW2_WEMWBS_3 | feeling relaxed |
+|  | CW2_WEMWBS_4 | dealing with problems well |
+|  | CW2_WEMWBS_5 | thinking clearly |
+|  | CW2_WEMWBS_6 | feeling close to other people |
+|  | CW2_WEMWBS_7 | able to make up my own mind about things |
+| DV_GAD | CW2_GAD2PHQ2_1 | Feeling Nervous, Anxious Or On Edge |
+|  | CW2_GAD2PHQ2_2 | Not Being Able To Stop Or Control Worrying |
+|  | CW2_GAD2PHQ2_3 | Little Interest Or Pleasure In Doing Things |
+|  | CW2_GAD2PHQ2_4 | Feeling Down, Depressed Or Hopeless |
+| DV_RPTT | CW2_RISK | willingness to take risks from 0 (Never) to 10 (Always) |
+|  | CW2_PATIENT | how patient respondent is from 0 (Never) to 10 (Always) |
+|  | CW2_TRUST | how trusting of others from 0 (Not at all) to 10 (Extremely) |
+|  | CW2_TRUSTPOLP | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
+
+```{r, include=FALSE}
+
+# 选择变量，自动忽略不存在的
+W02_A <- W02 %>%
+  select(NCDSID, any_of(c(
+    "CW2_PSEX",
+    "CW2_COVIDSYMPT_1", "CW2_COVIDSYMPT_2", "CW2_COVIDSYMPT_3", "CW2_COVIDSYMPT_4",
+    "CW2_COVIDSYMPT_5", "CW2_COVIDSYMPT_6", "CW2_COVIDSYMPT_7", "CW2_COVIDSYMPT_8",
+    "CW2_COVIDSYMPT_10", "CW2_COVIDSYMPT_11", "CW2_COVIDSYMPT_12",
+    "CW2_COVIDSYMPT_13", "CW2_COVIDSYMPT_14", "CW2_COVIDSYMPT_16", 
+    "CW2_COVIDSYMPT_17", "CW2_COVIDSYMPT_18", "CW2_COVIDSYMPT_19", 
+    "CW2_COVIDSYMPT_20", "CW2_COVIDSYMPT_23",
+
+    "CW2_PHDE", "CW2_PHHO", "CW2_PHRF", "CW2_PHEE", "CW2_PHWO", "CW2_PHNE",
+    
+    paste0("CW2_LLI_", 1:17),
+    paste0("CW2_LONELY_", 1:4),
+    paste0("CW2_WEMWBS_", 1:7),
+    paste0("CW2_MALAISE_", 1:9),
+    paste0("CW2_GAD2PHQ2_", 1:4),
+
+    "CW2_RISK", "CW2_PATIENT", "CW2_TRUST", "CW2_TRUSTPOLP"
+  )))
+```
+
+## Wave 3
+
+**Wave 3** Variable Table
+
+| Type | Variable Acronym | Explanation |
+|------------------------|------------------------|------------------------|
+| Demo | CW3_PSEX | Sex of Respondent |
+| Mod_Cov | CW3_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
+| Mod_Cov | CW3_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
+| DV_WEMWBS | CW3_WEMWBS_1 | feeling optimistic about the future |
+|  | CW3_WEMWBS_2 | feeling useful |
+|  | CW3_WEMWBS_3 | feeling relaxed |
+|  | CW3_WEMWBS_4 | dealing with problems well |
+|  | CW3_WEMWBS_5 | thinking clearly |
+|  | CW3_WEMWBS_6 | feeling close to other people |
+|  | CW3_WEMWBS_7 | able to make up my own mind about things |
+| DV_MALAISE | CW3_MALAISE_1 | feel tired most of the time |
+|  | CW3_MALAISE_2 | feel miserable or depressed |
+|  | CW3_MALAISE_3 | get worried about things |
+|  | CW3_MALAISE_4 | get in a violent rage |
+|  | CW3_MALAISE_5 | suddenly become scared for no good reason |
+|  | CW3_MALAISE_6 | easily upset or irritated |
+|  | CW3_MALAISE_7 | constantly keyed up and jittery |
+|  | CW3_MALAISE_8 | every little thing gets on your nerves and wears you out |
+|  | CW3_MALAISE_9 | heart often races like mad |
+| DV_GAD | CW3_GAD2PHQ2_1 | Feeling Nervous, Anxious Or On Edge |
+|  | CW3_GAD2PHQ2_2 | Not Being Able To Stop Or Control Worrying |
+|  | CW3_GAD2PHQ2_3 | Little Interest Or Pleasure In Doing Things |
+|  | CW3_GAD2PHQ2_4 | Feeling Down, Depressed Or Hopeless |
+| DV_RPTT | CW3_RISK | willingness to take risks from 0 (Never) to 10 (Always) |
+|  | CW3_PATIENT | how patient respondent is from 0 (Never) to 10 (Always) |
+|  | CW3_TRUST | how trusting of others from 0 (Not at all) to 10 (Extremely) |
+|  | CW3_TRUSTPOLP | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
+
+```{r, include=FALSE}
+# 选择变量，自动忽略不存在的
+W03_A <- W03 %>%
+  select(NCDSID, any_of(c(
+    "CW3_PSEX",
+    "CW3_COVIDSYMPT_1", "CW3_COVIDSYMPT_2", "CW3_COVIDSYMPT_3", "CW3_COVIDSYMPT_4",
+    "CW3_COVIDSYMPT_5", "CW3_COVIDSYMPT_6", "CW3_COVIDSYMPT_7", "CW3_COVIDSYMPT_8",
+    "CW3_COVIDSYMPT_10", "CW3_COVIDSYMPT_11", "CW3_COVIDSYMPT_12",
+    "CW3_COVIDSYMPT_13", "CW3_COVIDSYMPT_14", "CW3_COVIDSYMPT_16", 
+    "CW3_COVIDSYMPT_17", "CW3_COVIDSYMPT_18", "CW3_COVIDSYMPT_19", 
+    "CW3_COVIDSYMPT_20", "CW3_COVIDSYMPT_23",
+
+    "CW3_PHDE", "CW3_PHHO", "CW3_PHRF", "CW3_PHEE", "CW3_PHWO", "CW3_PHNE",
+    
+    paste0("CW3_LLI_", 1:17),
+    paste0("CW3_LONELY_", 1:4),
+    paste0("CW3_WEMWBS_", 1:7),
+    paste0("CW3_MALAISE_", 1:9),
+    paste0("CW3_GAD2PHQ2_", 1:4),
+
+    "CW3_RISK", "CW3_PATIENT", "CW3_TRUST", "CW3_TRUSTPOLP"
+  )))
+
+```
+
+## Demographic Exploration
+
+Number of participant how completed from Wave 1 to 3 are 4304
+
+```{r, include=FALSE}
+# Step 1: Extract IDs from each wave
+ids_w1 <- W01_A$NCDSID
+ids_w2 <- W02_A$NCDSID
+ids_w3 <- W03_A$NCDSID
+
+# Step 2: Find common IDs across all three waves
+common_ids <- Reduce(intersect, list(ids_w1, ids_w2, ids_w3))
+
+# Step 3: Count the number of participants
+length(common_ids)
+```
+
+Subset datasets to only those participants
+
+```{r}
+W01_complete <- W01_A[W01_A$NCDSID %in% common_ids, ]
+W02_complete <- W02_A[W02_A$NCDSID %in% common_ids, ]
+W03_complete <- W03_A[W03_A$NCDSID %in% common_ids, ]
+
+#Ensure uniqueness before merging
+W01_complete <- W01_complete[!duplicated(W01_complete$NCDSID), ]
+W02_complete <- W02_complete[!duplicated(W02_complete$NCDSID), ]
+
+W01_clean <- W01_complete %>% group_by(NCDSID) %>% slice(1) %>% ungroup()
+W02_clean <- W02_complete %>% group_by(NCDSID) %>% slice(1) %>% ungroup()
+W03_clean <- W03_complete %>% group_by(NCDSID) %>% slice(1) %>% ungroup()
+
+merged_all <- W01_clean %>%
+  inner_join(W02_clean, by = "NCDSID") %>%
+  inner_join(W03_clean, by = "NCDSID")
+
+
+n_distinct(merged_all$NCDSID)
+nrow(merged_all) 
+
+
+```
+
+Save the final data set for next analysis
+
+```{r}
+save(merged_all, file = "Data.RData")
+
+```
+
+Summary of participants with longterm illness in Wave 1
+
+```{r}
+
+#List the relevant long-term illness variables in Wave 1
+lli_vars <- paste0("CW1_LLI_", 1:17)
+
+#Create a summary table
+lli_summary <- merged_all %>%
+  summarise(
+    Total_Participants = n(),
+    across(all_of(lli_vars), ~ sum(. == "Yes", na.rm = TRUE), .names = "n_{.col}")
+  )
+
+#Rename 
+summary_out <- t(lli_summary)
+
+rownames(summary_out) <- recode(
+  rownames(summary_out),
+  "n_CW1_LLI_1" = "Cancer",
+  "n_CW1_LLI_2" = "Cystic fibrosis",
+  "n_CW1_LLI_3" = "Asthma",
+  "n_CW1_LLI_4" = "Chronic Obstructive Pulmonary Disease",
+  "n_CW1_LLI_5" = "Wheezy bronchitis",
+  "n_CW1_LLI_6" = "Diabetes",
+  "n_CW1_LLI_7" = "Recurrent backache/prolapsed disc/sciatica/other back problem",
+  "n_CW1_LLI_8" = "Problems with hearing",
+  "n_CW1_LLI_9" = "High blood pressure",
+  "n_CW1_LLI_10" = "Heart disease, congenital or acquired",
+  "n_CW1_LLI_11" = "Depression/emotional/nervous/psychiatric probs ",
+  "n_CW1_LLI_12" = "Obesity",
+  "n_CW1_LLI_13" = "Chronic Obstructive Airways Disease",
+  "n_CW1_LLI_14" = "Infection", 
+  "n_CW1_LLI_15" = "HIV/Immunodeficiency ",
+  "n_CW1_LLI_16" = "Conditions affecting the brain and nerves",
+  "n_CW1_LLI_17" = "Any Long Term Illness"
+)
+
+print(summary_out)
+
+```
+
+Summarise Sex within 2 IV groups
+
+```{r}
+summary_gender <- merged_all %>%
+  filter(CW1_LLI_17 %in% c("Yes", "No")) %>%
+  count(CW1_LLI_17, CW1_PSEX, name = "Count") %>%
+  group_by(CW1_LLI_17) %>%
+  mutate(Percent = round(Count / sum(Count) * 100, 1)) %>%
+  ungroup() %>%
+  mutate(
+    CW1_LLI_17 = recode(CW1_LLI_17, "Yes" = "Any Long Term Illness", "No" = "No Long Term Illness"),
+    CW1_PSEX = recode(CW1_PSEX, "Male" = "M", "Female" = "F")
+  )
+
+
+print(summary_gender)
+```
