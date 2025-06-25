@@ -42,7 +42,7 @@ The study looks into the participants with long-standing illness. Hence the foll
 **Wave 1** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Demo | CW1_PSEX | Sex of Respondent |
 | Mod_Cov | CW1_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW1_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
@@ -138,7 +138,7 @@ library(dplyr)
 
 W01_A <- W01 %>%
   select(
-    NCDSID, CW1_PSEX,
+    NCDSID, BCSID,NSID, MCSID, CW1_PSEX,
     CW1_COVIDSYMPT_1, CW1_COVIDSYMPT_2, CW1_COVIDSYMPT_3, CW1_COVIDSYMPT_4,
     CW1_COVIDSYMPT_5, CW1_COVIDSYMPT_6, CW1_COVIDSYMPT_7, CW1_COVIDSYMPT_8,
     CW1_COVIDSYMPT_18, CW1_COVIDSYMPT_10, CW1_COVIDSYMPT_11, CW1_COVIDSYMPT_12,
@@ -166,7 +166,7 @@ W01_A <- W01 %>%
 **Wave 2** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Demo | CW2_PSEX | Sex of Respondent |
 | Mod_Cov | CW2_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW2_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
@@ -190,7 +190,7 @@ W01_A <- W01 %>%
 
 # 选择变量，自动忽略不存在的
 W02_A <- W02 %>%
-  select(NCDSID, any_of(c(
+  select(NCDSID, BCSID,NSID, MCSID, any_of(c(
     "CW2_PSEX",
     "CW2_COVIDSYMPT_1", "CW2_COVIDSYMPT_2", "CW2_COVIDSYMPT_3", "CW2_COVIDSYMPT_4",
     "CW2_COVIDSYMPT_5", "CW2_COVIDSYMPT_6", "CW2_COVIDSYMPT_7", "CW2_COVIDSYMPT_8",
@@ -206,6 +206,7 @@ W02_A <- W02 %>%
     paste0("CW2_WEMWBS_", 1:7),
     paste0("CW2_MALAISE_", 1:9),
     paste0("CW2_GAD2PHQ2_", 1:4),
+    paste0("CW2_GHQ12", 1:12),
 
     "CW2_RISK", "CW2_PATIENT", "CW2_TRUST", "CW2_TRUSTPOLP"
   )))
@@ -216,7 +217,7 @@ W02_A <- W02 %>%
 **Wave 3** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Demo | CW3_PSEX | Sex of Respondent |
 | Mod_Cov | CW3_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW3_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
@@ -248,7 +249,7 @@ W02_A <- W02 %>%
 ```{r, include=FALSE}
 # 选择变量，自动忽略不存在的
 W03_A <- W03 %>%
-  select(NCDSID, any_of(c(
+  select(NCDSID, BCSID,NSID, MCSID, any_of(c(
     "CW3_PSEX",
     "CW3_COVIDSYMPT_1", "CW3_COVIDSYMPT_2", "CW3_COVIDSYMPT_3", "CW3_COVIDSYMPT_4",
     "CW3_COVIDSYMPT_5", "CW3_COVIDSYMPT_6", "CW3_COVIDSYMPT_7", "CW3_COVIDSYMPT_8",
@@ -264,21 +265,70 @@ W03_A <- W03 %>%
     paste0("CW3_WEMWBS_", 1:7),
     paste0("CW3_MALAISE_", 1:9),
     paste0("CW3_GAD2PHQ2_", 1:4),
+    paste0("CW3_GHQ12", 1:12),
 
     "CW3_RISK", "CW3_PATIENT", "CW3_TRUST", "CW3_TRUSTPOLP"
   )))
 
 ```
 
+###combine IDs: NCDSID, BCSID,NSID, MCSID
+
+```{r}
+W01_A <- W01_A %>%
+  mutate(across(c(NCDSID, BCSID, NSID, MCSID), ~ trimws(.)))
+
+# Step 2: Create a new ID column from the first non-missing, non-blank ID
+W01_A <- W01_A %>%
+  mutate(ID = coalesce(
+    na_if(NCDSID, ""), 
+    na_if(BCSID, ""), 
+    na_if(NSID, ""), 
+    na_if(MCSID, "")
+  ))
+
+# Step 3: Filter out rows with no ID at all
+W01_A <- W01_A %>%
+  filter(!is.na(ID))
+
+W02_A <- W02_A %>%
+  mutate(across(c(NCDSID, BCSID, NSID, MCSID), ~ trimws(.)))
+
+W02_A <- W02_A %>%
+  mutate(ID = coalesce(
+    na_if(NCDSID, ""), 
+    na_if(BCSID, ""), 
+    na_if(NSID, ""), 
+    na_if(MCSID, "")
+  ))
+
+W02_A <- W02_A %>%
+  filter(!is.na(ID))
+
+W03_A <- W03_A %>%
+  mutate(across(c(NCDSID, BCSID, NSID, MCSID), ~ trimws(.)))
+
+W03_A <- W03_A %>%
+  mutate(ID = coalesce(
+    na_if(NCDSID, ""), 
+    na_if(BCSID, ""), 
+    na_if(NSID, ""), 
+    na_if(MCSID, "")
+  ))
+
+W03_A <- W03_A %>%
+  filter(!is.na(ID))
+```
+
 ## Demographic Exploration
 
-Number of participant how completed from Wave 1 to 3 are 4304
+Number of participant how completed from Wave 1 to 3 are 11740
 
-```{r, include=FALSE}
+```{r}
 # Step 1: Extract IDs from each wave
-ids_w1 <- W01_A$NCDSID
-ids_w2 <- W02_A$NCDSID
-ids_w3 <- W03_A$NCDSID
+ids_w1 <- W01_A$ID
+ids_w2 <- W02_A$ID
+ids_w3 <- W03_A$ID
 
 # Step 2: Find common IDs across all three waves
 common_ids <- Reduce(intersect, list(ids_w1, ids_w2, ids_w3))
@@ -290,33 +340,39 @@ length(common_ids)
 Subset datasets to only those participants
 
 ```{r}
-W01_complete <- W01_A[W01_A$NCDSID %in% common_ids, ]
-W02_complete <- W02_A[W02_A$NCDSID %in% common_ids, ]
-W03_complete <- W03_A[W03_A$NCDSID %in% common_ids, ]
+
+
+W01_complete <- W01_A %>%
+  filter(ID %in% common_ids) 
+
+W02_complete <- W02_A %>%
+  filter(ID %in% common_ids) 
+
+W03_complete <- W03_A %>%
+  filter(ID %in% common_ids) 
+
 
 #Ensure uniqueness before merging
-W01_complete <- W01_complete[!duplicated(W01_complete$NCDSID), ]
-W02_complete <- W02_complete[!duplicated(W02_complete$NCDSID), ]
+W01_clean <- W01_complete %>%
+  group_by(ID) %>%
+  summarise(across(everything(), ~ first(na.omit(.))), .groups = "drop")
 
-W01_clean <- W01_complete %>% group_by(NCDSID) %>% slice(1) %>% ungroup()
-W02_clean <- W02_complete %>% group_by(NCDSID) %>% slice(1) %>% ungroup()
-W03_clean <- W03_complete %>% group_by(NCDSID) %>% slice(1) %>% ungroup()
+W02_clean <- W02_complete %>%
+  group_by(ID) %>%
+  summarise(across(everything(), ~ first(na.omit(.))), .groups = "drop")
+
+W03_clean <- W03_complete %>%
+  group_by(ID) %>%
+  summarise(across(everything(), ~ first(na.omit(.))), .groups = "drop")
 
 merged_all <- W01_clean %>%
-  inner_join(W02_clean, by = "NCDSID") %>%
-  inner_join(W03_clean, by = "NCDSID")
+  inner_join(W02_clean, by = "ID") %>%
+  inner_join(W03_clean, by = "ID")
 
 
-n_distinct(merged_all$NCDSID)
+n_distinct(merged_all$ID)
 nrow(merged_all) 
 
-
-```
-
-Save the final data set for next analysis
-
-```{r}
-save(merged_all, file = "Data.RData")
 
 ```
 
@@ -378,4 +434,347 @@ summary_gender <- merged_all %>%
 
 
 print(summary_gender)
+```
+
+## Primary research question:
+
+How does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions?
+
+### Recode the questionnaire to get total scores of mental health outcomes
+
+```{r,  include=FALSE}
+
+# 1. MALAISE
+# Recode Yes/No to 1/0, then sum
+merged_all <- merged_all %>%
+  mutate(
+    MALAISE_W1 = rowSums(across(
+      all_of(paste0("CW1_MALAISE_", 1:9)),
+      ~ case_when(
+        . == "Yes" ~ 1,
+        . == "No" ~ 0,
+        TRUE ~ NA_real_
+      )
+    ), na.rm = TRUE),
+    
+    MALAISE_W2 = rowSums(across(
+      all_of(paste0("CW2_MALAISE_", 1:9)),
+      ~ case_when(
+        . == "Yes" ~ 1,
+        . == "No" ~ 0,
+        TRUE ~ NA_real_
+      )
+    ), na.rm = TRUE),
+    
+    MALAISE_W3 = rowSums(across(
+      all_of(paste0("CW3_MALAISE_", 1:9)),
+      ~ case_when(
+        . == "Yes" ~ 1,
+        . == "No" ~ 0,
+        TRUE ~ NA_real_
+      )
+    ), na.rm = TRUE)
+  )
+
+#2. GAD
+#Recode  Not at all/ Several days/More than half the days/ Nearly every day to 0/1/2/3, then sum
+merged_all <- merged_all %>%
+  mutate(
+    GAD_W1 = rowSums(across(
+    all_of(paste0("CW1_GAD2PHQ2_", 1:4)),
+    ~ case_when(
+        . == "Not at all" ~ 0,
+        . == "Several days" ~ 1,
+        . == "More than half the days" ~ 2,
+        . == "Nearly every day" ~ 3,
+        TRUE ~ NA_real_
+      )
+  ), na.rm = TRUE), 
+  
+  GAD_W2 = rowSums(across(
+    all_of(paste0("CW2_GAD2PHQ2_", 1:4)),
+    ~ case_when(
+        . == "Not at all" ~ 0,
+        . == "Several days" ~ 1,
+        . == "More than half the days" ~ 2,
+        . == "Nearly every day" ~ 3,
+        TRUE ~ NA_real_
+      )
+  ), na.rm = TRUE),
+  
+  GAD_W3 = rowSums(across(
+    all_of(paste0("CW3_GAD2PHQ2_", 1:4)),
+    ~ case_when(
+        . == "Not at all" ~ 0,
+        . == "Several days" ~ 1,
+        . == "More than half the days" ~ 2,
+        . == "Nearly every day" ~ 3,
+        TRUE ~ NA_real_
+      )
+  ), na.rm = TRUE))
+
+#3 RPTT
+# CW1_RISK: Never\n0, 1, 2, 3,4,5,6,7,8,9,Always\n10 
+# CW1_PATIENT: Never\n0, 1, 2, 3,4,5,6,7,8,9,Always\n10 
+# CW1_TRUST: Not at all trusting\n0, 1, 2, 3,4,5,6,7,8,9,Extremely trusting\n10
+# CW1_TRUSTPOLP: Not at all trusting\n0, 1, 2, 3,4,5,6,7,8,9,Extremely trusting\n10
+
+merged_all <- merged_all %>%
+  mutate(
+    CW1_RISK = case_when(
+      CW1_RISK == "Never\n0" ~ 0,
+      CW1_RISK == "Always\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW1_RISK))
+    ),
+    CW1_PATIENT = case_when(
+      CW1_PATIENT == "Never\n0" ~ 0,
+      CW1_PATIENT == "Always\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW1_PATIENT))
+    ),
+    CW2_RISK = case_when(
+      CW2_RISK == "Never\n0" ~ 0,
+      CW2_RISK == "Always\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW2_RISK))
+    ),
+    CW3_RISK = case_when(
+      CW3_RISK == "Never\n0" ~ 0,
+      CW3_RISK == "Always\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW3_RISK))
+    ),
+    CW2_PATIENT = case_when(
+      CW2_PATIENT == "Never\n0" ~ 0,
+      CW2_PATIENT == "Always\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW2_PATIENT))
+    ),
+    CW3_PATIENT = case_when(
+      CW3_PATIENT == "Never\n0" ~ 0,
+      CW3_PATIENT == "Always\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW3_PATIENT))
+    ),
+    
+  )
+
+merged_all <- merged_all %>%
+  mutate(
+    CW1_TRUST = case_when(
+      CW1_TRUST == "Not at all trusting\n0" ~ 0,
+      CW1_TRUST == "Extremely trusting\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW1_TRUST))
+    ),
+    CW1_TRUSTPOLP = case_when(
+      CW1_TRUSTPOLP == "Not at all trusting\n0" ~ 0,
+     CW1_TRUSTPOLP== "Extremely trusting\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW1_TRUSTPOLP))
+    ),
+    CW2_TRUST = case_when(
+      CW2_TRUST == "Not at all trusting\n0" ~ 0,
+      CW2_TRUST == "Extremely trusting\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW2_TRUST))
+    ),
+    CW3_TRUST = case_when(
+      CW3_TRUST == "Not at all trusting\n0" ~ 0,
+      CW3_TRUST == "Extremely trusting\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW3_TRUST))
+    ),
+    CW2_TRUSTPOLP = case_when(
+      CW2_TRUSTPOLP == "Not at all trusting\n0" ~ 0,
+     CW2_TRUSTPOLP== "Extremely trusting\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW2_TRUSTPOLP))
+    ),
+    CW3_TRUSTPOLP = case_when(
+      CW3_TRUSTPOLP == "Not at all trusting\n0" ~ 0,
+     CW3_TRUSTPOLP== "Extremely trusting\n10" ~ 10,
+      TRUE ~ as.numeric(as.character(CW3_TRUSTPOLP))
+    ),
+  )
+
+merged_all <- merged_all %>%
+  mutate(
+    RPTT_W1 = rowSums(across(
+      c(CW1_RISK, CW1_PATIENT, CW1_TRUST, CW1_TRUSTPOLP)
+    ), na.rm = TRUE),
+    
+    RPTT_W2 = rowSums(across(
+      c(CW2_RISK, CW2_PATIENT, CW2_TRUST, CW2_TRUSTPOLP)
+    ), na.rm = TRUE),
+    
+    RPTT_W3 = rowSums(across(
+      c(CW3_RISK, CW3_PATIENT, CW3_TRUST, CW3_TRUSTPOLP)
+    ), na.rm = TRUE)
+  )
+
+
+#4. Lonely
+
+merged_all <- merged_all %>%
+  mutate(Lonely_W1 = rowSums(across(
+    all_of(paste0("CW1_LONELY_", 1:4)),
+   .fns = ~ case_when(
+        . == "Hardly ever" ~ 0,
+        . == "Some of the time" ~ 1,
+        . == "Often" ~ 2,
+        TRUE ~ NA_real_
+      )
+  ), na.rm = TRUE),
+ 
+   Lonely_W2 = rowSums(across(
+    all_of(paste0("CW2_LONELY_", 1:4)),
+   .fns = ~ case_when(
+        . == "Hardly ever" ~ 0,
+        . == "Some of the time" ~ 1,
+        . == "Often" ~ 2,
+        TRUE ~ NA_real_
+      )
+  ), na.rm = TRUE),
+  
+  Lonely_W3 = rowSums(across(
+    all_of(paste0("CW3_LONELY_", 1:4)),
+   .fns = ~ case_when(
+        . == "Hardly ever" ~ 0,
+        . == "Some of the time" ~ 1,
+        . == "Often" ~ 2,
+        TRUE ~ NA_real_
+      )
+  ), na.rm = TRUE)
+  )
+
+#5. Kessler 
+
+CW1_PHDE
+CW1_PHHO
+CW1_PHRF
+CW1_PHEE
+CW1_PHWO
+CW1_PHNE
+merged_all <- merged_all %>%
+  mutate(
+    Kessler_W1 = rowSums(across(
+      all_of(c("CW1_PHDE", "CW1_PHHO", "CW1_PHRF", "CW1_PHEE", "CW1_PHWO", "CW1_PHNE")),
+      ~ case_when(
+        . == "All of the time" ~ 4,
+        . == "Most of the time" ~ 3,
+        . == "Some of the time" ~ 2,
+        . == "A little of the time" ~ 1,
+        . == "None of the time" ~ 0,
+        TRUE ~ NA_real_
+      )
+    ), na.rm = TRUE),
+
+    Kessler_W2 = rowSums(across(
+      all_of(c("CW2_PHDE", "CW2_PHHO", "CW2_PHRF", "CW2_PHEE", "CW2_PHWO", "CW2_PHNE")),
+      ~ case_when(
+        . == "All of the time" ~ 4,
+        . == "Most of the time" ~ 3,
+        . == "Some of the time" ~ 2,
+        . == "A little of the time" ~ 1,
+        . == "None of the time" ~ 0,
+        TRUE ~ NA_real_
+      )
+    ), na.rm = TRUE),
+
+    Kessler_W3 = rowSums(across(
+      all_of(c("CW3_PHDE", "CW3_PHHO", "CW3_PHRF", "CW3_PHEE", "CW3_PHWO", "CW3_PHNE")),
+      ~ case_when(
+        . == "All of the time" ~ 4,
+        . == "Most of the time" ~ 3,
+        . == "Some of the time" ~ 2,
+        . == "A little of the time" ~ 1,
+        . == "None of the time" ~ 0,
+        TRUE ~ NA_real_
+      )
+    ), na.rm = TRUE)
+  )
+
+#6 WEMWBS
+
+recode_wemwbs <- function(x) {
+  case_when(
+    x == "All of the time" ~ 4,
+    x == "Often" ~ 3,
+    x == "Some of the time" ~ 2,
+    x == "Rarely" ~ 1,
+    x == "None of the time" ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+merged_all <- merged_all %>%
+  mutate(
+    WEMWBS_W1 = rowSums(across(all_of(paste0("CW1_WEMWBS_", 1:7)), recode_wemwbs), na.rm = TRUE),
+    WEMWBS_W2 = rowSums(across(all_of(paste0("CW2_WEMWBS_", 1:7)), recode_wemwbs), na.rm = TRUE),
+    WEMWBS_W3 = rowSums(across(all_of(paste0("CW3_WEMWBS_", 1:7)), recode_wemwbs), na.rm = TRUE)
+  )
+
+#7 GHQ12  
+
+recode_GHQ <- function(x) {
+  case_when(
+    x == " Much more than usual" ~ 3,
+    x == "Rather more than usual" ~ 2,
+    x == "No more than usual" ~ 1,
+    x == "Not at all" ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+merged_all <- merged_all %>%
+  mutate(
+    GHQ_W1 = rowSums(across(all_of(paste0("CW1_GHQ12", 1:12)), recode_GHQ), na.rm = TRUE),
+    GHQ_W2 = rowSums(across(all_of(paste0("CW2_GHQ12", 1:12)), recode_GHQ), na.rm = TRUE),
+    GHQ_W3 = rowSums(across(all_of(paste0("CW3_GHQ12", 1:12)), recode_GHQ), na.rm = TRUE)
+  )
+```
+
+## Final check before running Structural Equation Modeling (SEM)
+
+### Missing data
+
+```{r, include=FALSE}
+sapply(merged_all, function(x) mean(is.na(x)))
+```
+
+```{r}
+
+library(lavaan)
+long_model <- '
+  # Measurement model
+  MH_W1 =~ GAD_W1 + RPTT_W1 + Lonely_W1 + Kessler_W1 + WEMWBS_W1 + GHQ_W1
+  MH_W2 =~ GAD_W2 + RPTT_W2 + Lonely_W2 + Kessler_W2 + WEMWBS_W2 + GHQ_W2
+  MH_W3 =~ GAD_W3 + RPTT_W3 + Lonely_W3 + Kessler_W3 + WEMWBS_W3 + GHQ_W3
+
+  # Latent growth model (intercept and slope)
+  i =~ 1*MH_W1 + 1*MH_W2 + 1*MH_W3
+  s =~ 0*MH_W1 + 1*MH_W2 + 2*MH_W3
+
+  # Optional: regress intercept and slope on long-term illness group
+  i ~ CW1_LLI_17
+  s ~ CW1_LLI_17
+'
+
+fit_long <- sem(long_model, data = merged_all, estimator = "MLR", missing = "fiml")
+
+summary(fit_long, fit.measures = TRUE, standardized = TRUE)
+
+
+
+```
+
+## SEM diagram
+
+```{r}
+#install package if you havent 
+
+library(semPlot)
+
+
+semPaths(
+  object = fit_long,            # Your lavaan model object
+  what = "std",                 # Standardized estimates
+  layout = "tree",              # Layout type: "tree", "circle", "spring"
+  edge.label.cex = 0.8,         # Font size for edge labels
+  sizeMan = 6,                  # Size of manifest variables
+  sizeLat = 8,                  # Size of latent variables
+  nCharNodes = 0,               # Prevent name truncation
+  residuals = FALSE,            # Optional: show/hide residual variances
+  intercepts = FALSE,           # Optional: show/hide intercepts
+  exoCov = FALSE                # Hide covariances among exogenous variables
+)
 ```
