@@ -857,7 +857,6 @@ summary(fit_long_cov, fit.measures = TRUE, standardized = TRUE)
 
 LISIYI include interpretation here!!!!!
 
-
 ## SEM diagram
 
 ```{r}
@@ -866,16 +865,14 @@ LISIYI include interpretation here!!!!!
 library(semPlot)
 
 
-semPaths(
-  object = fit_long,            # Your lavaan model object
-  what = "std",                 # Standardized estimates
-  layout = "tree",              # Layout type: "tree", "circle", "spring"
-  edge.label.cex = 0.8,         # Font size for edge labels
-  sizeMan = 6,                  # Size of manifest variables
-  sizeLat = 8,                  # Size of latent variables
-  nCharNodes = 0,               # Prevent name truncation
-  residuals = FALSE,            # Optional: show/hide residual variances
-  intercepts = FALSE,           # Optional: show/hide intercepts
-  exoCov = FALSE                # Hide covariances among exogenous variables
-)
+semPaths(fit_long_cov,
+         what = "std",         # use standardized estimates
+         layout = "tree",      # good for longitudinal structure
+         edge.label.cex = 0.8, # scale of edge labels
+         sizeMan = 6,          # observed variable node size
+         sizeLat = 8,          # latent variable node size
+         residuals = TRUE,     # show residual variances
+         intercepts = FALSE,   # usually hide intercepts
+         nCharNodes = 0,       # show full variable names
+         title = FALSE)        # remove default title
 ```
