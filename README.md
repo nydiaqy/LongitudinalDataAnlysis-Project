@@ -39,3 +39,34 @@ Collaborative frameworks
 Pictures 
 Model 
 Varible 
+
+Rationale
+1. Background
+The COVID-19 pandemic has posed significant challenges to population mental health, particularly among individuals with pre-existing health conditions. Understanding how long-term illness affects mental health during global crises is crucial for identifying vulnerable groups and informing targeted support strategies.
+2. Findings of Previous Research: Mental Health Risks in Individuals with Long-Term Illness
+Previous studies have found that people with long-term illnesses are generally at greater risk of developing mental disorders. For example, Verhaak et al. (2005) found that patients with chronic medical conditions (e.g., asthma, diabetes, cancer) consistently reported higher levels of psychological distress compared to the general population, as measured by the GHQ-12. Notably, this elevated distress was not attributable to specific diseases, but rather to common stressors across conditions, such as physical disability, pain, and social or relational difficulties.
+Similarly, Pierce et al. (2021) found that older adults with existing mental health disorders and/or chronic illnesses were more likely to develop additional mental health problems and/or physical conditions, indicating a reciprocal relationship between the two.
+Delamater et al. (2017) also reported that a significant portion of children and adolescents experience mental health problems related to their chronic health conditions.
+3. Limitations of Previous Research
+Some studies did not isolate chronic illness as a variable of interest, distinguish between types of illness, or examine longitudinal change (e.g., Verhaak et al., 2005). Although Pierce et al. (2021) tracked mental health changes over time, they did not explicitly explore the role of chronic illness or differentiate between illness types.
+Other research provided only limited empirical evidence. For example, Chudasama et al. (2020) highlighted the risks faced by individuals with chronic illnesses during the pandemic, but offered minimal empirical data and did not directly assess mental health outcomes.
+4. The Aim of Our Study
+This project aims to examine how the presence of long-term illness influences self-reported mental health and well-being outcomes during the COVID-19 pandemic. Using data from the COVID-19 Survey in Five National Longitudinal Cohort Studies (2020–2021), we seek to compare mental health trajectories between individuals with and without long-term health conditions.
+The primary research question is:
+How does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions?
+We use the presence of a long-term illness (e.g., cancer, asthma, diabetes, depression, anxiety) as the independent variable (IV), and several validated mental health measures as dependent variables (DVs), including:
+Kessler-6 (K6): Psychological distress
+WEMWBS: Mental well-being
+Malaise Inventory: Symptoms of depression and psychological dysfunction
+GHQ-12: General mental health
+GAD-2: Anxiety symptoms
+Participants are grouped as follows:
+Group 1: Individuals with long-term illness
+Group 2: Individuals without any long-term illness (control group)
+Beyond the primary comparison, we aim to explore whether the type of long-term condition moderates its impact on mental health:
+Psychological conditions (e.g., depression, anxiety, PTSD)
+Physical but stable conditions (e.g., asthma, diabetes)
+Potentially life-threatening physical conditions (e.g., cancer)
+No condition (control)
+This stratified analysis will allow us to examine whether mental health outcomes vary depending on the nature of the long-term illness—an insight that could inform more nuanced interventions and policy responses in future public health crises.
+
