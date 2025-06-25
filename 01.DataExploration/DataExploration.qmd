@@ -42,7 +42,7 @@ The study looks into the participants with long-standing illness. Hence the foll
 **Wave 1** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Demo | CW1_PSEX | Sex of Respondent |
 | Mod_Cov | CW1_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW1_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
@@ -166,7 +166,7 @@ W01_A <- W01 %>%
 **Wave 2** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Demo | CW2_PSEX | Sex of Respondent |
 | Mod_Cov | CW2_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW2_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
@@ -217,7 +217,7 @@ W02_A <- W02 %>%
 **Wave 3** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Demo | CW3_PSEX | Sex of Respondent |
 | Mod_Cov | CW3_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
 | Mod_Cov | CW3_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
@@ -441,7 +441,8 @@ print(summary_gender)
 How does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions?
 
 ### Recode the questionnaire:
-to get total scores of mental health outcomes. If all items of the questionnaire were NA, than the total score is NA. 
+
+to get total scores of mental health outcomes. If all items of the questionnaire were NA, than the total score is NA.
 
 ```{r,  include=FALSE}
 
@@ -788,6 +789,7 @@ merged_all <- merged_all %>%
 ```
 
 ### Final check
+
 before running Structural Equation Modeling (SEM)
 
 #### Missing data
@@ -802,7 +804,8 @@ sapply(merged_all[sem_vars_W2], function(x) mean(is.na(x)))
 sem_vars_W3 <- c("MALAISE_W3", "GAD_W3", "RPTT_W3", "Lonely_W3", "Kessler_W3", "WEMWBS_W3", "GHQ_W3")
 sapply(merged_all[sem_vars_W3], function(x) mean(is.na(x)))
 ```
-GHQ_W1–3(88%), Kessler_W1–3(75%), WEMWBS_W1–3(75%) high missing due to only one cohort out of four included these measures. May consider dropping these from the model. 
+
+GHQ_W1–3(88%), Kessler_W1–3(75%), WEMWBS_W1–3(75%) high missing due to only one cohort out of four included these measures. May consider dropping these from the model.
 
 Exclude who did not report CW1_LLI_17 (any longitudinal disease)
 
@@ -811,16 +814,13 @@ merged_all<- merged_all %>%
   filter(!is.na(CW1_LLI_17))
 ```
 
-### SEM for all participant 
-1. Model fit is poor. 
--> Dropped RPTT because it is negative and weak (–0.35) → problematic.
+### SEM for all participant
 
-2. Model fit is still poor (RMSEA > 0.2 is very high).Latent factors are stable. 
--> add residual covariances (GAD and LONELY correlated)
+1.  Model fit is poor. -\> Dropped RPTT because it is negative and weak (–0.35) → problematic.
 
-3. Model fit is still poor (RMSEA > 0.2). CFI increased. Variables unstable
--> dropped residual covariances. Added Time-invariant 
+2.  Model fit is still poor (RMSEA \> 0.2 is very high).Latent factors are stable. -\> add residual covariances (GAD and LONELY correlated)
 
+3.  Model fit is still poor (RMSEA \> 0.2). CFI increased. Variables unstable -\> dropped residual covariances. Added Time-invariant
 
 ```{r}
 
@@ -889,8 +889,8 @@ semPaths(fit_long_cov,
 ```
 
 ### Explorational SEM
-1. Exclude participants who have depression or other emotional/nervous/psychiatric probs. Test SEM again. 
--> dropped GHQ due to low loadings and high residuals 
+
+1.  Exclude participants who have depression or other emotional/nervous/psychiatric probs. Test SEM again. -\> dropped GHQ due to low loadings and high residuals
 
 ```{r}
 
@@ -934,7 +934,8 @@ fit_long_dep <- sem(long_model_dep,
 summary(fit_long_dep, fit.measures = TRUE, standardized = TRUE)
 
 ```
-#@LISIYI include interpretation here
+
+\#@LISIYI include interpretation here
 
 #### SEM diagram @LIYISI refine diagram
 
