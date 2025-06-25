@@ -1,0 +1,1 @@
+{"frames":[{"func":"read.spss(\"00.Data/01. covid-19_wave1_survey_cls.sav\", to.data.frame = TRUE)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in read.spss(\"00.Data/01. covid-19_wave1_survey_cls.sav\", to.data.frame = TRUE) : \n  unable to open file: 'No such file or directory'\n"}

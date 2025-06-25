@@ -1,0 +1,10 @@
+---
+title: "Research question analysis"
+format: html
+editor: visual
+---
+
+## Primary research question: 
+
+ow does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions? Analysis strategy: SEM Long-term Illness (2 groups) → Mental Health (latent factor)\
+↘ Control variables (sex, etc.)

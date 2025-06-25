@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Exploration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="DataExploration_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DataExploration_files/libs/quarto-html/quarto.js"></script>
+<script src="DataExploration_files/libs/quarto-html/popper.min.js"></script>
+<script src="DataExploration_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DataExploration_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DataExploration_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DataExploration_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DataExploration_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DataExploration_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DataExploration_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Exploration</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
+<p>Load the packages. If not installed please install first.</p>
+<p>Overview of data</p>
+<section id="select-relevant-rows" class="level3">
+<h3 class="anchored" data-anchor-id="select-relevant-rows">Select Relevant Rows</h3>
+<p>The study looks into the participants with long-standing illness. Hence the following variable will be selected.</p>
+<p>*Demo = Demographic information Acronym</p>
+<p>*Mod_ = Moderator</p>
+</section>
+</section>
+<section id="wave-1" class="level2">
+<h2 class="anchored" data-anchor-id="wave-1">Wave 1</h2>
+<p><strong>Wave 1</strong> Variable Table</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Variable Acronym</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demo</td>
+<td>CW1_PSEX</td>
+<td>Sex of Respondent</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_1</td>
+<td>Past 2 weeks COVID19 symptoms: Fever</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_2</td>
+<td>Past 2 weeks COVID19 symptoms: Cough - dry</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_3</td>
+<td>Past 2 weeks COVID19 symptoms: Cough - mucus or phlegm</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_4</td>
+<td>Past 2 weeks COVID19 symptoms: Sore throat</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_5</td>
+<td>Past 2 weeks COVID19 symptoms: Chest tightness</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_6</td>
+<td>Past 2 weeks COVID19 symptoms: Shortness of breath</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_7</td>
+<td>Past 2 weeks COVID19 symptoms: Runny nose</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_8</td>
+<td>Past 2 weeks COVID19 symptoms: Nasal congestion</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_18</td>
+<td>Past 2 weeks COVID19 symptoms: Sneezing</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_10</td>
+<td>Past 2 weeks COVID19 symptoms: Muscle or body aches</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_11</td>
+<td>Past 2 weeks COVID19 symptoms: Fatigue</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_12</td>
+<td>Past 2 weeks COVID19 symptoms: Unusual loose motions or diarrhoea</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_16</td>
+<td>Past 2 weeks COVID19 symptoms: Vomiting</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_13</td>
+<td>Past 2 weeks COVID19 symptoms: Loss of smell</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_14</td>
+<td>Past 2 weeks COVID19 symptoms: Loss of taste</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_17</td>
+<td>Past 2 weeks COVID19 symptoms: Skin rash</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_19</td>
+<td>Past 2 weeks COVID19 symptoms: Headaches</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_20</td>
+<td>Past 2 weeks COVID19 symptoms: Other</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW1_COVIDSYMPT_23</td>
+<td>Past 2 weeks no COVID19 symptoms experienced</td>
+</tr>
+<tr class="odd">
+<td>Mod_Health</td>
+<td>CW1_GHQ</td>
+<td>Post-C19: Respondent self-assessment of general health</td>
+</tr>
+<tr class="even">
+<td>Mod_Health</td>
+<td>CW1_GHQPRECOVID</td>
+<td>Pre-C19: Respondent self-assessment of general health in 3 months preceding outbreak</td>
+</tr>
+<tr class="odd">
+<td>IV</td>
+<td>CW1_LLI_1</td>
+<td>long-standing illness 1: Cancer</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_2</td>
+<td>long-standing illness: Cystic fibrosis</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_3</td>
+<td>long-standing illness: Asthma</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_4</td>
+<td>long-standing illness: Chronic Obstructive Pulmonary Disease</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_5</td>
+<td>long-standing illness: Wheezy bronchitis</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_6</td>
+<td>long-standing illness: Diabetes</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_7</td>
+<td>long-standing illness: Recurrent backache/prolapsed disc/sciatica/other back probm</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_8</td>
+<td>long-standing illness: Problems with hearing</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_9</td>
+<td>long-standing illness: High blood pressure</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_10</td>
+<td>long-standing illness: Heart disease, congenital or acquired</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_11</td>
+<td>long-standing illness: Depression or other emotional/nervous/psychiatric probs</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_12</td>
+<td>long-standing illness: Obesity</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_13</td>
+<td>long-standing illness: Chronic Obstructive Airways Disease</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_14</td>
+<td>long-standing illness: Infection</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_15</td>
+<td>long-standing illness: HIV/Immunodeficiency</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_16</td>
+<td>long-standing illness: Conditions affecting the brain and nerves</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_17</td>
+<td>Respondent suffering from a long-standing illness:</td>
+</tr>
+<tr class="even">
+<td>Mod_Lonely</td>
+<td>CW1_LONELY_1</td>
+<td>How often - lack companionship</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LONELY_2</td>
+<td>How often - left out</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LONELY_3</td>
+<td>How often - isolated from others</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LONELY_4</td>
+<td>How often - lonely</td>
+</tr>
+<tr class="even">
+<td>DV_Kessler6</td>
+<td>CW1_PHDE</td>
+<td>Felt depressed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_PHHO</td>
+<td>felt hopeless</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_PHRF</td>
+<td>felt restless</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_PHEE</td>
+<td>felt everything was an effort</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_PHWO</td>
+<td>felt worthless</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_PHNE</td>
+<td>felt nervous</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_HARM</td>
+<td>has harmed self on purpose</td>
+</tr>
+<tr class="odd">
+<td>DV_WEMWBS</td>
+<td>CW1_WEMWBS_1</td>
+<td>feeling optimistic about the future</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_WEMWBS_2</td>
+<td>feeling useful</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_WEMWBS_3</td>
+<td>feeling relaxed</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_WEMWBS_4</td>
+<td>dealing with problems well</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_WEMWBS_5</td>
+<td>thinking clearly</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_WEMWBS_6</td>
+<td>thinking close to other people</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_WEMWBS_7</td>
+<td>able to make up my own mind about things</td>
+</tr>
+<tr class="even">
+<td>DV_MALAISE</td>
+<td>CW1_MALAISE_1</td>
+<td>feel tired most of the time</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_2</td>
+<td>feel miserable or depressed</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_3</td>
+<td>get worried about things</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_4</td>
+<td>get in a violent rage</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_5</td>
+<td>suddenly become scared for no good reason</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_6</td>
+<td>easily upset or irritated</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_7</td>
+<td>constantly keyed up and jittery</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_8</td>
+<td>every little thing get on your nerves and wear you out</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_9</td>
+<td>heart often race like mad</td>
+</tr>
+<tr class="odd">
+<td>DV_GHQ</td>
+<td>CW1_GHQ121</td>
+<td>able to concentrate</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ122</td>
+<td>lost much sleep over worry</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ123</td>
+<td>felt that playing a useful part in things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ124</td>
+<td>felt capable of making decisions about things</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ125</td>
+<td>felt constantly under strain</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ126</td>
+<td>couldn’t overcome difficulties</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ127</td>
+<td>able to enjoy normal day to day activities</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ128</td>
+<td>able to face up to problems</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ129</td>
+<td>feeling unhappy or depressed</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ1210</td>
+<td>losing confidence in self</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ1211</td>
+<td>thinking of self as a worthless person</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ1212</td>
+<td>feeling reasonably happy</td>
+</tr>
+<tr class="odd">
+<td>DV_GAD</td>
+<td>CW1_GAD2PHQ2_1</td>
+<td>Feeling Nervous, Anxious Or On Edge</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GAD2PHQ2_2</td>
+<td>Not Being Able To Stop Or Control Worrying</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GAD2PHQ2_3</td>
+<td>Little Interest Or Pleasure In Doing Things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GAD2PHQ2_4</td>
+<td>Feeling Down, Depressed Or Hopeless</td>
+</tr>
+<tr class="odd">
+<td>DV_RPTT</td>
+<td>CW1_RISK</td>
+<td>willingness to take risks from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_PATIENT</td>
+<td>how patient Respondent is from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_TRUST</td>
+<td>how trusting of others from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_TRUSTPOLP</td>
+<td>how trusting of Govmnt from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+</tbody>
+</table>
+<section id="select-rows-from-the-wave-1-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="select-rows-from-the-wave-1-dataset">Select rows from the Wave 1 dataset</h3>
+</section>
+</section>
+<section id="wave-2" class="level2">
+<h2 class="anchored" data-anchor-id="wave-2">Wave 2</h2>
+<p><strong>Wave 2</strong> Variable Table</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Variable Acronym</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demo</td>
+<td>CW2_PSEX</td>
+<td>Sex of Respondent</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW2_COVIDSYMPT_1</td>
+<td>Past 2 weeks COVID19 symptoms: Fever</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW2_COVIDSYMPT_2</td>
+<td>Past 2 weeks COVID19 symptoms: Cough - dry</td>
+</tr>
+<tr class="even">
+<td>DV_WEMWBS</td>
+<td>CW2_WEMWBS_1</td>
+<td>feeling optimistic about the future</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_WEMWBS_2</td>
+<td>feeling useful</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_WEMWBS_3</td>
+<td>feeling relaxed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_WEMWBS_4</td>
+<td>dealing with problems well</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_WEMWBS_5</td>
+<td>thinking clearly</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_WEMWBS_6</td>
+<td>feeling close to other people</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_WEMWBS_7</td>
+<td>able to make up my own mind about things</td>
+</tr>
+<tr class="odd">
+<td>DV_GAD</td>
+<td>CW2_GAD2PHQ2_1</td>
+<td>Feeling Nervous, Anxious Or On Edge</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_GAD2PHQ2_2</td>
+<td>Not Being Able To Stop Or Control Worrying</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_GAD2PHQ2_3</td>
+<td>Little Interest Or Pleasure In Doing Things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_GAD2PHQ2_4</td>
+<td>Feeling Down, Depressed Or Hopeless</td>
+</tr>
+<tr class="odd">
+<td>DV_RPTT</td>
+<td>CW2_RISK</td>
+<td>willingness to take risks from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_PATIENT</td>
+<td>how patient respondent is from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_TRUST</td>
+<td>how trusting of others from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_TRUSTPOLP</td>
+<td>how trusting of Government from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wave-3" class="level2">
+<h2 class="anchored" data-anchor-id="wave-3">Wave 3</h2>
+<p><strong>Wave 3</strong> Variable Table</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Variable Acronym</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demo</td>
+<td>CW3_PSEX</td>
+<td>Sex of Respondent</td>
+</tr>
+<tr class="even">
+<td>Mod_Cov</td>
+<td>CW3_COVIDSYMPT_1</td>
+<td>Past 2 weeks COVID19 symptoms: Fever</td>
+</tr>
+<tr class="odd">
+<td>Mod_Cov</td>
+<td>CW3_COVIDSYMPT_2</td>
+<td>Past 2 weeks COVID19 symptoms: Cough - dry</td>
+</tr>
+<tr class="even">
+<td>DV_WEMWBS</td>
+<td>CW3_WEMWBS_1</td>
+<td>feeling optimistic about the future</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_WEMWBS_2</td>
+<td>feeling useful</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_WEMWBS_3</td>
+<td>feeling relaxed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_WEMWBS_4</td>
+<td>dealing with problems well</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_WEMWBS_5</td>
+<td>thinking clearly</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_WEMWBS_6</td>
+<td>feeling close to other people</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_WEMWBS_7</td>
+<td>able to make up my own mind about things</td>
+</tr>
+<tr class="odd">
+<td>DV_MALAISE</td>
+<td>CW3_MALAISE_1</td>
+<td>feel tired most of the time</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_2</td>
+<td>feel miserable or depressed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_3</td>
+<td>get worried about things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_4</td>
+<td>get in a violent rage</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_5</td>
+<td>suddenly become scared for no good reason</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_6</td>
+<td>easily upset or irritated</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_7</td>
+<td>constantly keyed up and jittery</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_8</td>
+<td>every little thing gets on your nerves and wears you out</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_9</td>
+<td>heart often races like mad</td>
+</tr>
+<tr class="even">
+<td>DV_GAD</td>
+<td>CW3_GAD2PHQ2_1</td>
+<td>Feeling Nervous, Anxious Or On Edge</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_GAD2PHQ2_2</td>
+<td>Not Being Able To Stop Or Control Worrying</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_GAD2PHQ2_3</td>
+<td>Little Interest Or Pleasure In Doing Things</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_GAD2PHQ2_4</td>
+<td>Feeling Down, Depressed Or Hopeless</td>
+</tr>
+<tr class="even">
+<td>DV_RPTT</td>
+<td>CW3_RISK</td>
+<td>willingness to take risks from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_PATIENT</td>
+<td>how patient respondent is from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_TRUST</td>
+<td>how trusting of others from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_TRUSTPOLP</td>
+<td>how trusting of Government from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+</tbody>
+</table>
+<p>###combine IDs: NCDSID, BCSID,NSID, MCSID</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(NCDSID, BCSID, NSID, MCSID), <span class="sc">~</span> <span class="fu">trimws</span>(.)))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Create a new ID column from the first non-missing, non-blank ID</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">coalesce</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NCDSID, <span class="st">""</span>), </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(BCSID, <span class="st">""</span>), </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NSID, <span class="st">""</span>), </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(MCSID, <span class="st">""</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Filter out rows with no ID at all</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ID))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(NCDSID, BCSID, NSID, MCSID), <span class="sc">~</span> <span class="fu">trimws</span>(.)))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">coalesce</span>(</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NCDSID, <span class="st">""</span>), </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(BCSID, <span class="st">""</span>), </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NSID, <span class="st">""</span>), </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(MCSID, <span class="st">""</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ID))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(NCDSID, BCSID, NSID, MCSID), <span class="sc">~</span> <span class="fu">trimws</span>(.)))</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">coalesce</span>(</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NCDSID, <span class="st">""</span>), </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(BCSID, <span class="st">""</span>), </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NSID, <span class="st">""</span>), </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(MCSID, <span class="st">""</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="demographic-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="demographic-exploration">Demographic Exploration</h2>
+<p>Number of participant how completed from Wave 1 to 3 are 11740</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Extract IDs from each wave</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ids_w1 <span class="ot">&lt;-</span> W01_A<span class="sc">$</span>ID</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ids_w2 <span class="ot">&lt;-</span> W02_A<span class="sc">$</span>ID</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ids_w3 <span class="ot">&lt;-</span> W03_A<span class="sc">$</span>ID</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Find common IDs across all three waves</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>common_ids <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(intersect, <span class="fu">list</span>(ids_w1, ids_w2, ids_w3))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Count the number of participants</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11740</code></pre>
+</div>
+</div>
+<p>Subset datasets to only those participants</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>W01_complete <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ID <span class="sc">%in%</span> common_ids) </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>W02_complete <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ID <span class="sc">%in%</span> common_ids) </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>W03_complete <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ID <span class="sc">%in%</span> common_ids) </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Ensure uniqueness before merging</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>W01_clean <span class="ot">&lt;-</span> W01_complete <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">first</span>(<span class="fu">na.omit</span>(.))), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>W02_clean <span class="ot">&lt;-</span> W02_complete <span class="sc">%&gt;%</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">first</span>(<span class="fu">na.omit</span>(.))), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>W03_clean <span class="ot">&lt;-</span> W03_complete <span class="sc">%&gt;%</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">first</span>(<span class="fu">na.omit</span>(.))), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> W01_clean <span class="sc">%&gt;%</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(W02_clean, <span class="at">by =</span> <span class="st">"ID"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(W03_clean, <span class="at">by =</span> <span class="st">"ID"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(merged_all<span class="sc">$</span>ID)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11740</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(merged_all) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11740</code></pre>
+</div>
+</div>
+<p>Summary of participants with longterm illness in Wave 1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#List the relevant long-term illness variables in Wave 1</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>lli_vars <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"CW1_LLI_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">17</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a summary table</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>lli_summary <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Participants =</span> <span class="fu">n</span>(),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">all_of</span>(lli_vars), <span class="sc">~</span> <span class="fu">sum</span>(. <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.names =</span> <span class="st">"n_{.col}"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Rename </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>summary_out <span class="ot">&lt;-</span> <span class="fu">t</span>(lli_summary)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(summary_out) <span class="ot">&lt;-</span> <span class="fu">recode</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(summary_out),</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_1"</span> <span class="ot">=</span> <span class="st">"Cancer"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_2"</span> <span class="ot">=</span> <span class="st">"Cystic fibrosis"</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_3"</span> <span class="ot">=</span> <span class="st">"Asthma"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_4"</span> <span class="ot">=</span> <span class="st">"Chronic Obstructive Pulmonary Disease"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_5"</span> <span class="ot">=</span> <span class="st">"Wheezy bronchitis"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_6"</span> <span class="ot">=</span> <span class="st">"Diabetes"</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_7"</span> <span class="ot">=</span> <span class="st">"Recurrent backache/prolapsed disc/sciatica/other back problem"</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_8"</span> <span class="ot">=</span> <span class="st">"Problems with hearing"</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_9"</span> <span class="ot">=</span> <span class="st">"High blood pressure"</span>,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_10"</span> <span class="ot">=</span> <span class="st">"Heart disease, congenital or acquired"</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_11"</span> <span class="ot">=</span> <span class="st">"Depression/emotional/nervous/psychiatric probs "</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_12"</span> <span class="ot">=</span> <span class="st">"Obesity"</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_13"</span> <span class="ot">=</span> <span class="st">"Chronic Obstructive Airways Disease"</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_14"</span> <span class="ot">=</span> <span class="st">"Infection"</span>, </span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_15"</span> <span class="ot">=</span> <span class="st">"HIV/Immunodeficiency "</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_16"</span> <span class="ot">=</span> <span class="st">"Conditions affecting the brain and nerves"</span>,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_17"</span> <span class="ot">=</span> <span class="st">"Any Long Term Illness"</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                               [,1]
+Total_Participants                                            11740
+Cancer                                                          178
+Cystic fibrosis                                                   0
+Asthma                                                         1374
+Chronic Obstructive Pulmonary Disease                           121
+Wheezy bronchitis                                                54
+Diabetes                                                        498
+Recurrent backache/prolapsed disc/sciatica/other back problem  1449
+Problems with hearing                                           792
+High blood pressure                                            1509
+Heart disease, congenital or acquired                           232
+Depression/emotional/nervous/psychiatric probs                 1379
+Obesity                                                        1040
+Chronic Obstructive Airways Disease                              25
+Infection                                                        89
+HIV/Immunodeficiency                                             69
+Conditions affecting the brain and nerves                       120
+Any Long Term Illness                                          5696</code></pre>
+</div>
+</div>
+<p>Summarise Sex within 2 IV groups</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>summary_gender <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CW1_LLI_17 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CW1_LLI_17, CW1_PSEX, <span class="at">name =</span> <span class="st">"Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CW1_LLI_17) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percent =</span> <span class="fu">round</span>(Count <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_LLI_17 =</span> <span class="fu">recode</span>(CW1_LLI_17, <span class="st">"Yes"</span> <span class="ot">=</span> <span class="st">"Any Long Term Illness"</span>, <span class="st">"No"</span> <span class="ot">=</span> <span class="st">"No Long Term Illness"</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_PSEX =</span> <span class="fu">recode</span>(CW1_PSEX, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"M"</span>, <span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"F"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  CW1_LLI_17            CW1_PSEX Count Percent
+  &lt;fct&gt;                 &lt;fct&gt;    &lt;int&gt;   &lt;dbl&gt;
+1 No Long Term Illness  M         2151    36.7
+2 No Long Term Illness  F         3710    63.3
+3 Any Long Term Illness M         2183    38.3
+4 Any Long Term Illness F         3513    61.7</code></pre>
+</div>
+</div>
+</section>
+<section id="primary-research-question" class="level2">
+<h2 class="anchored" data-anchor-id="primary-research-question">Primary research question:</h2>
+<p>How does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions?</p>
+<section id="recode-the-questionnaire-to-get-total-scores-of-mental-health-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="recode-the-questionnaire-to-get-total-scores-of-mental-health-outcomes">Recode the questionnaire to get total scores of mental health outcomes</h3>
+</section>
+</section>
+<section id="final-check-before-running-structural-equation-modeling-sem" class="level2">
+<h2 class="anchored" data-anchor-id="final-check-before-running-structural-equation-modeling-sem">Final check before running Structural Equation Modeling (SEM)</h2>
+<section id="missing-data" class="level3">
+<h3 class="anchored" data-anchor-id="missing-data">Missing data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is lavaan 0.6-19
+lavaan is FREE software! Please report any bugs.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>long_model <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">  # Measurement model</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">  MH_W1 =~ GAD_W1 + RPTT_W1 + Lonely_W1 + Kessler_W1 + WEMWBS_W1 + GHQ_W1</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">  MH_W2 =~ GAD_W2 + RPTT_W2 + Lonely_W2 + Kessler_W2 + WEMWBS_W2 + GHQ_W2</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">  MH_W3 =~ GAD_W3 + RPTT_W3 + Lonely_W3 + Kessler_W3 + WEMWBS_W3 + GHQ_W3</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">  # Latent growth model (intercept and slope)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">  i =~ 1*MH_W1 + 1*MH_W2 + 1*MH_W3</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">  s =~ 0*MH_W1 + 1*MH_W2 + 2*MH_W3</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">  # Optional: regress intercept and slope on long-term illness group</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st">  i ~ CW1_LLI_17</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">  s ~ CW1_LLI_17</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>fit_long <span class="ot">&lt;-</span> <span class="fu">sem</span>(long_model, <span class="at">data =</span> merged_all, <span class="at">estimator =</span> <span class="st">"MLR"</span>, <span class="at">missing =</span> <span class="st">"fiml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_data_full():  
+   183 cases were deleted due to missing values in exogenous variable(s), 
+   while fixed.x = TRUE.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: lavaan-&gt;lav_object_post_check():  
+   some estimated lv variances are negative</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_long, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 211 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        59
+
+                                                  Used       Total
+  Number of observations                         11557       11740
+  Number of missing patterns                         1            
+
+Model Test User Model:
+                                                Standard      Scaled
+  Test Statistic                              101150.344   61150.758
+  Degrees of freedom                                 148         148
+  P-value (Chi-square)                             0.000       0.000
+  Scaling correction factor                                    1.654
+    Yuan-Bentler correction (Mplus variant)                         
+
+Model Test Baseline Model:
+
+  Test statistic                            170346.688   89460.558
+  Degrees of freedom                               171         171
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.904
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.406       0.317
+  Tucker-Lewis Index (TLI)                       0.314       0.211
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.407
+  Robust Tucker-Lewis Index (TLI)                            0.314
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)            -532423.853 -532423.853
+  Scaling correction factor                                  2.509
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)    -481848.681 -481848.681
+  Scaling correction factor                                  1.898
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                             1064965.706 1064965.706
+  Bayesian (BIC)                           1065399.653 1065399.653
+  Sample-size adjusted Bayesian (SABIC)    1065212.158 1065212.158
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.243       0.189
+  90 Percent confidence interval - lower         0.242       0.188
+  90 Percent confidence interval - upper         0.244       0.190
+  P-value H_0: RMSEA &lt;= 0.050                    0.000       0.000
+  P-value H_0: RMSEA &gt;= 0.080                    1.000       1.000
+                                                                  
+  Robust RMSEA                                               0.243
+  90 Percent confidence interval - lower                     0.241
+  90 Percent confidence interval - upper                     0.244
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.000
+  P-value H_0: Robust RMSEA &gt;= 0.080                         1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.208       0.208
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  MH_W1 =~                                                              
+    GAD_W1            1.000                               0.473    0.181
+    RPTT_W1          -1.940    0.205   -9.469    0.000   -0.918   -0.126
+    Lonely_W1         0.716    0.037   19.385    0.000    0.339    0.158
+    Kessler_W1        5.468    0.275   19.881    0.000    2.588    0.683
+    WEMWBS_W1        13.695    0.884   15.489    0.000    6.482    0.845
+    GHQ_W1           -0.784    0.059  -13.298    0.000   -0.371   -0.202
+  MH_W2 =~                                                              
+    GAD_W2            1.000                               0.524    0.193
+    RPTT_W2          -1.799    0.141  -12.727    0.000   -0.942   -0.157
+    Lonely_W2         0.687    0.035   19.471    0.000    0.360    0.163
+    Kessler_W2        5.008    0.199   25.203    0.000    2.622    0.666
+    WEMWBS_W2        12.556    0.660   19.010    0.000    6.574    0.848
+    GHQ_W2           -0.889    0.057  -15.636    0.000   -0.465   -0.207
+  MH_W3 =~                                                              
+    GAD_W3            1.000                               0.619    0.217
+    RPTT_W3          -1.343    0.120  -11.232    0.000   -0.832   -0.132
+    Lonely_W3         0.670    0.031   21.722    0.000    0.415    0.181
+    Kessler_W3        4.836    0.200   24.181    0.000    2.996    0.690
+    WEMWBS_W3         9.994    0.551   18.153    0.000    6.191    0.846
+    GHQ_W3           -0.782    0.050  -15.578    0.000   -0.485   -0.210
+  i =~                                                                  
+    MH_W1             1.000                               1.034    1.034
+    MH_W2             1.000                               0.935    0.935
+    MH_W3             1.000                               0.790    0.790
+  s =~                                                                  
+    MH_W1             0.000                                  NA       NA
+    MH_W2             1.000                                  NA       NA
+    MH_W3             2.000                                  NA       NA
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  i ~                                                                   
+    CW1_LLI_17       -0.096    0.010   -9.140    0.000   -0.196   -0.098
+  s ~                                                                   
+    CW1_LLI_17       -0.018    0.003   -5.118    0.000       NA       NA
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+ .i ~~                                                                  
+   .s                 0.055    0.011    4.913    0.000    1.603    1.603
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .GAD_W1            2.075    0.029   70.671    0.000    2.075    0.791
+   .RPTT_W1          20.726    0.076  271.119    0.000   20.726    2.840
+   .Lonely_W1         1.847    0.024   78.226    0.000    1.847    0.861
+   .Kessler_W1        2.414    0.093   25.857    0.000    2.414    0.637
+   .WEMWBS_W1         6.036    0.247   24.470    0.000    6.036    0.787
+   .GHQ_W1            0.456    0.019   23.870    0.000    0.456    0.248
+   .GAD_W2            2.243    0.031   72.612    0.000    2.243    0.826
+   .RPTT_W2          21.557    0.069  313.059    0.000   21.557    3.584
+   .Lonely_W2         1.895    0.025   77.288    0.000    1.895    0.858
+   .Kessler_W2        2.550    0.093   27.480    0.000    2.550    0.648
+   .WEMWBS_W2         6.350    0.238   26.652    0.000    6.350    0.820
+   .GHQ_W2            0.584    0.023   25.192    0.000    0.584    0.260
+   .GAD_W3            2.496    0.034   74.014    0.000    2.496    0.876
+   .RPTT_W3          20.642    0.069  299.655    0.000   20.642    3.265
+   .Lonely_W3         2.219    0.026   85.288    0.000    2.219    0.969
+   .Kessler_W3        2.881    0.107   26.824    0.000    2.881    0.664
+   .WEMWBS_W3         5.920    0.234   25.301    0.000    5.920    0.809
+   .GHQ_W3            0.612    0.024   25.097    0.000    0.612    0.265
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .GAD_W1            6.649    0.140   47.642    0.000    6.649    0.967
+   .RPTT_W1          52.401    0.920   56.958    0.000   52.401    0.984
+   .Lonely_W1         4.488    0.066   67.484    0.000    4.488    0.975
+   .Kessler_W1        7.680    0.264   29.124    0.000    7.680    0.534
+   .WEMWBS_W1        16.794    0.608   27.611    0.000   16.794    0.286
+   .GHQ_W1            3.251    0.109   29.697    0.000    3.251    0.959
+   .GAD_W2            7.096    0.141   50.436    0.000    7.096    0.963
+   .RPTT_W2          35.293    0.622   56.763    0.000   35.293    0.975
+   .Lonely_W2         4.742    0.070   67.451    0.000    4.742    0.973
+   .Kessler_W2        8.617    0.280   30.813    0.000    8.617    0.556
+   .WEMWBS_W2        16.821    0.559   30.077    0.000   16.821    0.280
+   .GHQ_W2            4.831    0.147   32.770    0.000    4.831    0.957
+   .GAD_W3            7.734    0.145   53.331    0.000    7.734    0.953
+   .RPTT_W3          39.272    0.657   59.733    0.000   39.272    0.983
+   .Lonely_W3         5.071    0.068   74.469    0.000    5.071    0.967
+   .Kessler_W3        9.862    0.295   33.386    0.000    9.862    0.524
+   .WEMWBS_W3        15.237    0.486   31.343    0.000   15.237    0.284
+   .GHQ_W3            5.098    0.149   34.140    0.000    5.098    0.956
+   .MH_W1            -0.016    0.015   -1.070    0.285   -0.070   -0.070
+   .MH_W2            -0.071    0.010   -7.001    0.000   -0.258   -0.258
+   .MH_W3            -0.057    0.020   -2.893    0.004   -0.148   -0.148
+   .i                 0.237    0.028    8.338    0.000    0.990    0.990
+   .s                -0.005    0.009   -0.515    0.607       NA       NA</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="sem-diagram" class="level2">
+<h2 class="anchored" data-anchor-id="sem-diagram">SEM diagram</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install package if you havent </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(semPlot)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">semPaths</span>(</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">object =</span> fit_long,            <span class="co"># Your lavaan model object</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"std"</span>,                 <span class="co"># Standardized estimates</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">layout =</span> <span class="st">"tree"</span>,              <span class="co"># Layout type: "tree", "circle", "spring"</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">edge.label.cex =</span> <span class="fl">0.8</span>,         <span class="co"># Font size for edge labels</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">sizeMan =</span> <span class="dv">6</span>,                  <span class="co"># Size of manifest variables</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sizeLat =</span> <span class="dv">8</span>,                  <span class="co"># Size of latent variables</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">nCharNodes =</span> <span class="dv">0</span>,               <span class="co"># Prevent name truncation</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">residuals =</span> <span class="cn">FALSE</span>,            <span class="co"># Optional: show/hide residual variances</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">intercepts =</span> <span class="cn">FALSE</span>,           <span class="co"># Optional: show/hide intercepts</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">exoCov =</span> <span class="cn">FALSE</span>                <span class="co"># Hide covariances among exogenous variables</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in qgraph::qgraph(Edgelist, labels = nLab, bidirectional = Bidir, :
+Non-finite weights are omitted</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DataExploration_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,20 @@
+"0","library(foreign)"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","W01 <- read.spss(""00.Data/01. covid-19_wave1_survey_cls.sav"", to.data.frame = TRUE)"
+"2","Error in read.spss(""00.Data/01. covid-19_wave1_survey_cls.sav"", to.data.frame = TRUE) : 
+  unable to open file: 'No such file or directory'
+"
