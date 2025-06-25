@@ -4,11 +4,11 @@ format: html
 editor: visual
 ---
 
-## Data Exploration
+#Longitudinal Data Analysis Pratical
 
 Load the packages. If not installed please install first.
 
-Overview of data
+## Overview of data
 
 ```{r, include=FALSE}
 library(foreign)
@@ -37,7 +37,7 @@ The study looks into the participants with long-standing illness. Hence the foll
 
 \*Mod\_ = Moderator
 
-## Wave 1
+#### Wave 1
 
 **Wave 1** Variable Table
 
@@ -130,7 +130,7 @@ The study looks into the participants with long-standing illness. Hence the foll
 |  | CW1_TRUST | how trusting of others from 0 (Not at all) to 10 (Extremely) |
 |  | CW1_TRUSTPOLP | how trusting of Govmnt from 0 (Not at all) to 10 (Extremely) |
 
-### Select rows from the Wave 1 dataset
+Select rows from the Wave 1 dataset
 
 ```{r, include=FALSE}
 
@@ -161,7 +161,7 @@ W01_A <- W01 %>%
   )
 ```
 
-## Wave 2
+#### Wave 2
 
 **Wave 2** Variable Table
 
@@ -212,7 +212,7 @@ W02_A <- W02 %>%
   )))
 ```
 
-## Wave 3
+#### Wave 3
 
 **Wave 3** Variable Table
 
@@ -272,7 +272,7 @@ W03_A <- W03 %>%
 
 ```
 
-###combine IDs: NCDSID, BCSID,NSID, MCSID
+### Combine IDs: NCDSID, BCSID,NSID, MCSID
 
 ```{r}
 W01_A <- W01_A %>%
@@ -440,7 +440,8 @@ print(summary_gender)
 
 How does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions?
 
-### Recode the questionnaire to get total scores of mental health outcomes. If all items of the questionnaire were NA, than the total score is NA. 
+### Recode the questionnaire:
+to get total scores of mental health outcomes. If all items of the questionnaire were NA, than the total score is NA. 
 
 ```{r,  include=FALSE}
 
@@ -786,9 +787,10 @@ merged_all <- merged_all %>%
 
 ```
 
-## Final check before running Structural Equation Modeling (SEM)
+### Final check
+before running Structural Equation Modeling (SEM)
 
-### Missing data
+#### Missing data
 
 ```{r}
 sem_vars_W1 <- c("MALAISE_W1", "GAD_W1", "RPTT_W1", "Lonely_W1", "Kessler_W1", "WEMWBS_W1", "GHQ_W1")
@@ -809,41 +811,50 @@ merged_all<- merged_all %>%
   filter(!is.na(CW1_LLI_17))
 ```
 
-1. Included GAD, LONELY, RPTT but model fit is poor. 
+### SEM for all participant 
+1. Model fit is poor. 
 -> Dropped RPTT because it is negative and weak (–0.35) → problematic.
 
 2. Model fit is still poor (RMSEA > 0.2 is very high).Latent factors are stable. 
 -> add residual covariances (GAD and LONELY correlated)
 
-3. Model fit is still poor (RMSEA > 0.2). CFI increased. vriables unstable
+3. Model fit is still poor (RMSEA > 0.2). CFI increased. Variables unstable
 -> dropped residual covariances. Added Time-invariant 
 
 
 ```{r}
 
 library(lavaan)
+
+merged_all$CW1_PSEX <- as.numeric(merged_all$CW1_PSEX == "Female")  # 1 = Female, 0 = Male
+
 long_model_cov <- '
   # Measurement model
-  MH_W1 =~ GAD_W1 + Lonely_W1
-  MH_W2 =~ GAD_W2 + Lonely_W2
-  MH_W3 =~ GAD_W3 + Lonely_W3
+    MH_W1 =~ GAD_W1 + Lonely_W1 + Kessler_W1 + WEMWBS_W1
+MH_W2 =~ GAD_W2 + Lonely_W2 + Kessler_W2 + WEMWBS_W2
+MH_W3 =~ GAD_W3 + Lonely_W3 + Kessler_W3 + WEMWBS_W3
 
  # Time-invariant residual covariances (correlated uniquenesses)
-  GAD_W1 ~~ GAD_W2
+  
+  GAD_W1 ~~ GAD_W2 + GAD_W3
   GAD_W2 ~~ GAD_W3
-  GAD_W1 ~~ GAD_W3
 
-  Lonely_W1 ~~ Lonely_W2
+  Lonely_W1 ~~ Lonely_W2 + Lonely_W3
   Lonely_W2 ~~ Lonely_W3
-  Lonely_W1 ~~ Lonely_W3
+
+  Kessler_W1 ~~ Kessler_W2 + Kessler_W3
+  Kessler_W2 ~~ Kessler_W3
+
+  WEMWBS_W1 ~~ WEMWBS_W2 + WEMWBS_W3
+  WEMWBS_W2 ~~ WEMWBS_W3
 
   # Latent growth model
   i =~ 1*MH_W1 + 1*MH_W2 + 1*MH_W3
   s =~ 0*MH_W1 + 1*MH_W2 + 2*MH_W3
 
   # Regress intercept and slope on LLI group
-  i ~ CW1_LLI_17
-  s ~ CW1_LLI_17
+  i ~ CW1_LLI_17 + CW1_PSEX
+  s ~ CW1_LLI_17 + CW1_PSEX
 '
 
 fit_long_cov <- sem(long_model_cov, 
@@ -855,9 +866,9 @@ summary(fit_long_cov, fit.measures = TRUE, standardized = TRUE)
 
 ```
 
-LISIYI include interpretation here!!!!!
+# @LISIYI include interpretation here!!!!!
 
-## SEM diagram
+#### SEM diagram @LIYISI refine diagram
 
 ```{r}
 #install package if you havent 
@@ -866,6 +877,69 @@ library(semPlot)
 
 
 semPaths(fit_long_cov,
+         what = "std",         # use standardized estimates
+         layout = "tree",      # good for longitudinal structure
+         edge.label.cex = 0.8, # scale of edge labels
+         sizeMan = 6,          # observed variable node size
+         sizeLat = 8,          # latent variable node size
+         residuals = TRUE,     # show residual variances
+         intercepts = FALSE,   # usually hide intercepts
+         nCharNodes = 0,       # show full variable names
+         title = FALSE)        # remove default title
+```
+
+### Explorational SEM
+1. Exclude participants who have depression or other emotional/nervous/psychiatric probs. Test SEM again. 
+-> dropped GHQ due to low loadings and high residuals 
+
+```{r}
+
+
+merged_all_dep <- merged_all %>%
+  filter(CW1_LLI_11 != "Yes" & !is.na(CW1_LLI_11))
+
+long_model_dep <- '
+  # Measurement model
+  MH_W1 =~ GAD_W1 + Lonely_W1 + Kessler_W1 + WEMWBS_W1
+MH_W2 =~ GAD_W2 + Lonely_W2 + Kessler_W2 + WEMWBS_W2
+MH_W3 =~ GAD_W3 + Lonely_W3 + Kessler_W3 + WEMWBS_W3
+
+#time invariance 
+
+  GAD_W1 ~~ GAD_W2 + GAD_W3
+  GAD_W2 ~~ GAD_W3
+
+  Lonely_W1 ~~ Lonely_W2 + Lonely_W3
+  Lonely_W2 ~~ Lonely_W3
+
+  Kessler_W1 ~~ Kessler_W2 + Kessler_W3
+  Kessler_W2 ~~ Kessler_W3
+
+  WEMWBS_W1 ~~ WEMWBS_W2 + WEMWBS_W3
+  WEMWBS_W2 ~~ WEMWBS_W3
+  
+  # Latent growth model
+  i =~ 1*MH_W1 + 1*MH_W2 + 1*MH_W3
+  s =~ 0*MH_W1 + 1*MH_W2 + 2*MH_W3
+
+  # Regress intercept and slope on LLI group
+  i ~ CW1_LLI_17 + CW1_PSEX
+  s ~ CW1_LLI_17 + CW1_PSEX
+'
+
+fit_long_dep <- sem(long_model_dep, 
+                    data = merged_all_dep, 
+                    estimator = "MLR", 
+                    missing = "fiml")
+summary(fit_long_dep, fit.measures = TRUE, standardized = TRUE)
+
+```
+#@LISIYI include interpretation here
+
+#### SEM diagram @LIYISI refine diagram
+
+```{r}
+semPaths(fit_long_dep,
          what = "std",         # use standardized estimates
          layout = "tree",      # good for longitudinal structure
          edge.label.cex = 0.8, # scale of edge labels
