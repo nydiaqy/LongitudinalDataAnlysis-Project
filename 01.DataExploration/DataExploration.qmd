@@ -188,7 +188,7 @@ W01_A <- W01 %>%
 
 ```{r, include=FALSE}
 
-# 选择变量，自动忽略不存在的
+# select rows from Wave2
 W02_A <- W02 %>%
   select(NCDSID, BCSID,NSID, MCSID, any_of(c(
     "CW2_PSEX",
@@ -247,7 +247,7 @@ W02_A <- W02 %>%
 |  | CW3_TRUSTPOLP | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
 
 ```{r, include=FALSE}
-# 选择变量，自动忽略不存在的
+
 W03_A <- W03 %>%
   select(NCDSID, BCSID,NSID, MCSID, any_of(c(
     "CW3_PSEX",
@@ -866,26 +866,45 @@ summary(fit_long_cov, fit.measures = TRUE, standardized = TRUE)
 
 ```
 
-# @LISIYI include interpretation here!!!!!
+Interpretation:
 
-#### SEM diagram @LIYISI refine diagram
+The SEM model demonstrated excellent fit (CFI = 0.989, TLI = 0.984, RMSEA = 0.027, SRMR = 0.041), indicating that the latent structure of mental health across three waves was well captured by the model.
+
+The intercept of the latent mental health trajectory (`i`) was significantly predicted by both **long-term illness** (`CW1_LLI_17`, β = 0.165, *p* \< .001) and **sex** (`CW1_PSEX`, β = 0.208, *p* \< .001), suggesting that individuals with long-term illnesses and females reported poorer mental health at baseline (higher scores indicate worse mental health).
+
+For the slope (`s`), **sex** was a significant predictor (β = 0.043, *p* = .039), indicating a slightly steeper increase in mental health problems over time among females. However, **long-term illness** was **not** a significant predictor of slope (β = 0.004, *p* = .862), suggesting that although people with long-term illnesses started worse off, their rate of change over time was similar to others.
+
+The latent mental health construct was robustly defined by GAD, Kessler, Loneliness (positive loadings), and WEMWBS (negative loadings), across all waves. Stability across timepoints was confirmed by moderate factor loadings and high residual correlations between indicator variables.
+
+:::
 
 ```{r}
 #install package if you havent 
 
-library(semPlot)
+library(lavaanPlot)
 
+# Create SEM diagram with visual emphasis
+lavaanPlot(
+  model = fit_long_cov,
+  coefs = TRUE,         # Display regression coefficients on the arrows
+  stand = TRUE,         # Use standardized estimates (so coefficients are on the same scale)
+  covs = TRUE,          # Show covariances between residuals
+  stars = "regress",    # Add significance stars to regression paths
+  node_options = list(
+    shape = "box",            # Variable nodes shown as rectangles
+    fontname = "Helvetica",   # Use Helvetica font
+    fontsize = 13,            # Font size for variable labels
+    color = "blue"            # Blue font color for variable labels
+  ),
+  edge_options = list(
+    fontsize = 11,            # Font size for coefficients
+    color = "black"           # Base color for paths (manual edit needed for highlights)
+  ),
+  graph_options = list(
+    rankdir = "LR"            # Layout left-to-right for better readability
+  )
+)
 
-semPaths(fit_long_cov,
-         what = "std",         # use standardized estimates
-         layout = "tree",      # good for longitudinal structure
-         edge.label.cex = 0.8, # scale of edge labels
-         sizeMan = 6,          # observed variable node size
-         sizeLat = 8,          # latent variable node size
-         residuals = TRUE,     # show residual variances
-         intercepts = FALSE,   # usually hide intercepts
-         nCharNodes = 0,       # show full variable names
-         title = FALSE)        # remove default title
 ```
 
 ### Explorational SEM
@@ -935,19 +954,39 @@ summary(fit_long_dep, fit.measures = TRUE, standardized = TRUE)
 
 ```
 
-\#@LISIYI include interpretation here
+After excluding participants with a history of depression, the model still showed excellent fit (CFI = 0.989, TLI = 0.984, RMSEA = 0.025, SRMR = 0.040).
 
-#### SEM diagram @LIYISI refine diagram
+The pattern of results shifted slightly: **long-term illness** was now **negatively associated** with baseline mental health (β = -0.034, *p* = .007), meaning that even among those without reported depression, having a long-term illness predicted worse baseline mental health.
+
+Sex remained a significant predictor of intercept (β = 0.195, *p* \< .001), again suggesting females started with worse mental health. Interestingly, **both long-term illness** (β = 0.045, *p* = .031) and **sex** (β = 0.052, *p* = .011) significantly predicted the **slope**, suggesting more pronounced worsening over time in those with long-term illness and in females.
+
+This indicates that among non-depressed individuals, long-term illness not only affected baseline levels but also predicted a steeper decline in mental health across waves.
 
 ```{r}
-semPaths(fit_long_dep,
-         what = "std",         # use standardized estimates
-         layout = "tree",      # good for longitudinal structure
-         edge.label.cex = 0.8, # scale of edge labels
-         sizeMan = 6,          # observed variable node size
-         sizeLat = 8,          # latent variable node size
-         residuals = TRUE,     # show residual variances
-         intercepts = FALSE,   # usually hide intercepts
-         nCharNodes = 0,       # show full variable names
-         title = FALSE)        # remove default title
+lavaanPlot(
+  model = fit_long_dep,
+  coefs = TRUE,         
+  stand = TRUE,         
+  covs = TRUE,          
+  stars = "regress",    
+  node_options = list(
+    shape = "box",
+    fontname = "Helvetica",
+    fontsize = 13,
+    color = "blue"
+  ),
+  edge_options = list(
+    fontsize = 11,
+    color = "black"
+  ),
+  graph_options = list(
+    rankdir = "LR"
+  )
+)
+```
+
+```{r}
+summary(fit_long_cov, fit.measures = TRUE, standardized = TRUE)
+summary(fit_long_dep, fit.measures = TRUE, standardized = TRUE)
+
 ```
