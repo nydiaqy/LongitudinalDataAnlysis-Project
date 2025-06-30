@@ -1,16 +1,30 @@
 ---
 title: "Data Exploration"
-format: html
+format: 
+  html: default
+  pdf: default
 editor: visual
 ---
 
 #Longitudinal Data Analysis Pratical
 
-Load the packages. If not installed please install first.
+Packages used in this file: If not installed please install first.
+
+foreign
+
+dplyr
+
+lavaan
+
+lavaanPlot
 
 ## Overview of data
 
-```{r, include=FALSE}
+```{r}
+#| echo: true
+#| results: "hide"
+#| message: false
+#| warning: false
 library(foreign)
 library(dplyr)
 
@@ -35,36 +49,13 @@ The study looks into the participants with long-standing illness. Hence the foll
 
 \*Demo = Demographic information Acronym
 
-\*Mod\_ = Moderator
-
 #### Wave 1
 
 **Wave 1** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Demo | CW1_PSEX | Sex of Respondent |
-| Mod_Cov | CW1_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
-| Mod_Cov | CW1_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
-| Mod_Cov | CW1_COVIDSYMPT_3 | Past 2 weeks COVID19 symptoms: Cough - mucus or phlegm |
-| Mod_Cov | CW1_COVIDSYMPT_4 | Past 2 weeks COVID19 symptoms: Sore throat |
-| Mod_Cov | CW1_COVIDSYMPT_5 | Past 2 weeks COVID19 symptoms: Chest tightness |
-| Mod_Cov | CW1_COVIDSYMPT_6 | Past 2 weeks COVID19 symptoms: Shortness of breath |
-| Mod_Cov | CW1_COVIDSYMPT_7 | Past 2 weeks COVID19 symptoms: Runny nose |
-| Mod_Cov | CW1_COVIDSYMPT_8 | Past 2 weeks COVID19 symptoms: Nasal congestion |
-| Mod_Cov | CW1_COVIDSYMPT_18 | Past 2 weeks COVID19 symptoms: Sneezing |
-| Mod_Cov | CW1_COVIDSYMPT_10 | Past 2 weeks COVID19 symptoms: Muscle or body aches |
-| Mod_Cov | CW1_COVIDSYMPT_11 | Past 2 weeks COVID19 symptoms: Fatigue |
-| Mod_Cov | CW1_COVIDSYMPT_12 | Past 2 weeks COVID19 symptoms: Unusual loose motions or diarrhoea |
-| Mod_Cov | CW1_COVIDSYMPT_16 | Past 2 weeks COVID19 symptoms: Vomiting |
-| Mod_Cov | CW1_COVIDSYMPT_13 | Past 2 weeks COVID19 symptoms: Loss of smell |
-| Mod_Cov | CW1_COVIDSYMPT_14 | Past 2 weeks COVID19 symptoms: Loss of taste |
-| Mod_Cov | CW1_COVIDSYMPT_17 | Past 2 weeks COVID19 symptoms: Skin rash |
-| Mod_Cov | CW1_COVIDSYMPT_19 | Past 2 weeks COVID19 symptoms: Headaches |
-| Mod_Cov | CW1_COVIDSYMPT_20 | Past 2 weeks COVID19 symptoms: Other |
-| Mod_Cov | CW1_COVIDSYMPT_23 | Past 2 weeks no COVID19 symptoms experienced |
-| Mod_Health | CW1_GHQ | Post-C19: Respondent self-assessment of general health |
-| Mod_Health | CW1_GHQPRECOVID | Pre-C19: Respondent self-assessment of general health in 3 months preceding outbreak |
 | IV | CW1_LLI_1 | long-standing illness 1: Cancer |
 |  | CW1_LLI_2 | long-standing illness: Cystic fibrosis |
 |  | CW1_LLI_3 | long-standing illness: Asthma |
@@ -132,19 +123,16 @@ The study looks into the participants with long-standing illness. Hence the foll
 
 Select rows from the Wave 1 dataset
 
-```{r, include=FALSE}
+```{r}
 
-library(dplyr)
+#| echo: true
+#| results: "hide"
+#| message: false
+#| warning: false
 
 W01_A <- W01 %>%
   select(
     NCDSID, BCSID,NSID, MCSID, CW1_PSEX,
-    CW1_COVIDSYMPT_1, CW1_COVIDSYMPT_2, CW1_COVIDSYMPT_3, CW1_COVIDSYMPT_4,
-    CW1_COVIDSYMPT_5, CW1_COVIDSYMPT_6, CW1_COVIDSYMPT_7, CW1_COVIDSYMPT_8,
-    CW1_COVIDSYMPT_18, CW1_COVIDSYMPT_10, CW1_COVIDSYMPT_11, CW1_COVIDSYMPT_12,
-    CW1_COVIDSYMPT_16, CW1_COVIDSYMPT_13, CW1_COVIDSYMPT_14, CW1_COVIDSYMPT_17,
-    CW1_COVIDSYMPT_19, CW1_COVIDSYMPT_20, CW1_COVIDSYMPT_23,
-    CW1_GHQ, CW1_GHQPRECOVID,
     
     matches("^CW1_LLI_([1-9]|1[0-7])$"),
     matches("^CW1_LONELY_([1-4])$"),
@@ -166,10 +154,8 @@ W01_A <- W01 %>%
 **Wave 2** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Demo | CW2_PSEX | Sex of Respondent |
-| Mod_Cov | CW2_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
-| Mod_Cov | CW2_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
 | DV_WEMWBS | CW2_WEMWBS_1 | feeling optimistic about the future |
 |  | CW2_WEMWBS_2 | feeling useful |
 |  | CW2_WEMWBS_3 | feeling relaxed |
@@ -186,18 +172,17 @@ W01_A <- W01 %>%
 |  | CW2_TRUST | how trusting of others from 0 (Not at all) to 10 (Extremely) |
 |  | CW2_TRUSTPOLP | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
 
-```{r, include=FALSE}
+```{r}
+
+#| echo: true
+#| results: "hide"
+#| message: false
+#| warning: false
 
 # select rows from Wave2
 W02_A <- W02 %>%
   select(NCDSID, BCSID,NSID, MCSID, any_of(c(
     "CW2_PSEX",
-    "CW2_COVIDSYMPT_1", "CW2_COVIDSYMPT_2", "CW2_COVIDSYMPT_3", "CW2_COVIDSYMPT_4",
-    "CW2_COVIDSYMPT_5", "CW2_COVIDSYMPT_6", "CW2_COVIDSYMPT_7", "CW2_COVIDSYMPT_8",
-    "CW2_COVIDSYMPT_10", "CW2_COVIDSYMPT_11", "CW2_COVIDSYMPT_12",
-    "CW2_COVIDSYMPT_13", "CW2_COVIDSYMPT_14", "CW2_COVIDSYMPT_16", 
-    "CW2_COVIDSYMPT_17", "CW2_COVIDSYMPT_18", "CW2_COVIDSYMPT_19", 
-    "CW2_COVIDSYMPT_20", "CW2_COVIDSYMPT_23",
 
     "CW2_PHDE", "CW2_PHHO", "CW2_PHRF", "CW2_PHEE", "CW2_PHWO", "CW2_PHNE",
     
@@ -217,10 +202,8 @@ W02_A <- W02 %>%
 **Wave 3** Variable Table
 
 | Type | Variable Acronym | Explanation |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Demo | CW3_PSEX | Sex of Respondent |
-| Mod_Cov | CW3_COVIDSYMPT_1 | Past 2 weeks COVID19 symptoms: Fever |
-| Mod_Cov | CW3_COVIDSYMPT_2 | Past 2 weeks COVID19 symptoms: Cough - dry |
 | DV_WEMWBS | CW3_WEMWBS_1 | feeling optimistic about the future |
 |  | CW3_WEMWBS_2 | feeling useful |
 |  | CW3_WEMWBS_3 | feeling relaxed |
@@ -246,19 +229,16 @@ W02_A <- W02 %>%
 |  | CW3_TRUST | how trusting of others from 0 (Not at all) to 10 (Extremely) |
 |  | CW3_TRUSTPOLP | how trusting of Government from 0 (Not at all) to 10 (Extremely) |
 
-```{r, include=FALSE}
+```{r}
+
+#| echo: true
+#| results: "hide"
+#| message: false
+#| warning: false
 
 W03_A <- W03 %>%
   select(NCDSID, BCSID,NSID, MCSID, any_of(c(
-    "CW3_PSEX",
-    "CW3_COVIDSYMPT_1", "CW3_COVIDSYMPT_2", "CW3_COVIDSYMPT_3", "CW3_COVIDSYMPT_4",
-    "CW3_COVIDSYMPT_5", "CW3_COVIDSYMPT_6", "CW3_COVIDSYMPT_7", "CW3_COVIDSYMPT_8",
-    "CW3_COVIDSYMPT_10", "CW3_COVIDSYMPT_11", "CW3_COVIDSYMPT_12",
-    "CW3_COVIDSYMPT_13", "CW3_COVIDSYMPT_14", "CW3_COVIDSYMPT_16", 
-    "CW3_COVIDSYMPT_17", "CW3_COVIDSYMPT_18", "CW3_COVIDSYMPT_19", 
-    "CW3_COVIDSYMPT_20", "CW3_COVIDSYMPT_23",
-
-    "CW3_PHDE", "CW3_PHHO", "CW3_PHRF", "CW3_PHEE", "CW3_PHWO", "CW3_PHNE",
+    "CW3_PSEX", "CW3_PHDE", "CW3_PHHO", "CW3_PHRF", "CW3_PHEE", "CW3_PHWO", "CW3_PHNE",
     
     paste0("CW3_LLI_", 1:17),
     paste0("CW3_LONELY_", 1:4),
@@ -444,7 +424,12 @@ How does having a long-term illness affect self-reported mental health outcomes 
 
 to get total scores of mental health outcomes. If all items of the questionnaire were NA, than the total score is NA.
 
-```{r,  include=FALSE}
+```{r}
+
+#| echo: true
+#| results: "hide"
+#| message: false
+#| warning: false 
 
 
 # 1. MALAISE
@@ -983,10 +968,4 @@ lavaanPlot(
     rankdir = "LR"
   )
 )
-```
-
-```{r}
-summary(fit_long_cov, fit.measures = TRUE, standardized = TRUE)
-summary(fit_long_dep, fit.measures = TRUE, standardized = TRUE)
-
 ```
