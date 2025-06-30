@@ -1,4 +1,18 @@
 # Siyi-Qiaoyu Porject
+
+### Presentation Outline
+QY: Research Aim
+RQs
+Variable 
+SY: Rational 
+Hypothesis 
+QY: Collaborative frameworks
+Coding
+Model 
+SY: Interpretation
+Limitations
+Bibiliography 
+
 ### Research Aim
 To investigate the impact of long-term illness on mental health and well-being during the COVID-19 pandemic using data from the COVID-19 Survey in Five National Longitudinal Cohort Studies (2020–2021).
 
@@ -29,18 +43,8 @@ Do certain types of long-term illness — especially psychological conditions (e
 - Physical – potentially life-threatening (e.g. cancer)
 - No long-term illness (control group)
 
-### Presentation Component
-Rational 
-RQs
-Hypothesis
-Limitations
-Bibiliography 
-Collaborative frameworks
-Pictures 
-Model 
-Varible 
 
-Rationale
+### Rationale
 1. Background
 The COVID-19 pandemic has posed significant challenges to population mental health, particularly among individuals with pre-existing health conditions. Understanding how long-term illness affects mental health during global crises is crucial for identifying vulnerable groups and informing targeted support strategies.
 2. Findings of Previous Research: Mental Health Risks in Individuals with Long-Term Illness
