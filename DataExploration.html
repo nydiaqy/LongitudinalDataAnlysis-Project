@@ -1,0 +1,2306 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Exploration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="DataExploration_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DataExploration_files/libs/quarto-html/quarto.js"></script>
+<script src="DataExploration_files/libs/quarto-html/popper.min.js"></script>
+<script src="DataExploration_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DataExploration_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DataExploration_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DataExploration_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DataExploration_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DataExploration_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DataExploration_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="DataExploration_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="DataExploration_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="DataExploration_files/libs/viz-1.8.2/viz.js"></script>
+<link href="DataExploration_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+<script src="DataExploration_files/libs/grViz-binding-1.0.11/grViz.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="DataExploration.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Exploration</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>#Longitudinal Data Analysis Pratical</p>
+<p>Packages used in this file: If not installed please install first.</p>
+<p>foreign</p>
+<p>dplyr</p>
+<p>lavaan</p>
+<p>lavaanPlot</p>
+<section id="overview-of-data" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-data">Overview of data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>W01 <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../00.Data/01. covid-19_wave1_survey_cls.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(W01)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(W01)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>W02 <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../00.Data/02. covid-19_wave2_survey_cls.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(W02)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(W02)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>W03 <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../00.Data/03. covid-19_wave3_survey_cls.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(W03)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(W03)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="select-relevant-rows" class="level3">
+<h3 class="anchored" data-anchor-id="select-relevant-rows">Select Relevant Rows</h3>
+<p>The study looks into the participants with long-standing illness. Hence the following variable will be selected.</p>
+<p>*Demo = Demographic information Acronym</p>
+<section id="wave-1" class="level4">
+<h4 class="anchored" data-anchor-id="wave-1">Wave 1</h4>
+<p><strong>Wave 1</strong> Variable Table</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Variable Acronym</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demo</td>
+<td>CW1_PSEX</td>
+<td>Sex of Respondent</td>
+</tr>
+<tr class="even">
+<td>IV</td>
+<td>CW1_LLI_1</td>
+<td>long-standing illness 1: Cancer</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_2</td>
+<td>long-standing illness: Cystic fibrosis</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_3</td>
+<td>long-standing illness: Asthma</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_4</td>
+<td>long-standing illness: Chronic Obstructive Pulmonary Disease</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_5</td>
+<td>long-standing illness: Wheezy bronchitis</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_6</td>
+<td>long-standing illness: Diabetes</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_7</td>
+<td>long-standing illness: Recurrent backache/prolapsed disc/sciatica/other back probm</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_8</td>
+<td>long-standing illness: Problems with hearing</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_9</td>
+<td>long-standing illness: High blood pressure</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_10</td>
+<td>long-standing illness: Heart disease, congenital or acquired</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_11</td>
+<td>long-standing illness: Depression or other emotional/nervous/psychiatric probs</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_12</td>
+<td>long-standing illness: Obesity</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_13</td>
+<td>long-standing illness: Chronic Obstructive Airways Disease</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_14</td>
+<td>long-standing illness: Infection</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_15</td>
+<td>long-standing illness: HIV/Immunodeficiency</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LLI_16</td>
+<td>long-standing illness: Conditions affecting the brain and nerves</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LLI_17</td>
+<td>Respondent suffering from a long-standing illness:</td>
+</tr>
+<tr class="odd">
+<td>Mod_Lonely</td>
+<td>CW1_LONELY_1</td>
+<td>How often - lack companionship</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LONELY_2</td>
+<td>How often - left out</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_LONELY_3</td>
+<td>How often - isolated from others</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_LONELY_4</td>
+<td>How often - lonely</td>
+</tr>
+<tr class="odd">
+<td>DV_Kessler6</td>
+<td>CW1_PHDE</td>
+<td>Felt depressed</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_PHHO</td>
+<td>felt hopeless</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_PHRF</td>
+<td>felt restless</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_PHEE</td>
+<td>felt everything was an effort</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_PHWO</td>
+<td>felt worthless</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_PHNE</td>
+<td>felt nervous</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_HARM</td>
+<td>has harmed self on purpose</td>
+</tr>
+<tr class="even">
+<td>DV_WEMWBS</td>
+<td>CW1_WEMWBS_1</td>
+<td>feeling optimistic about the future</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_WEMWBS_2</td>
+<td>feeling useful</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_WEMWBS_3</td>
+<td>feeling relaxed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_WEMWBS_4</td>
+<td>dealing with problems well</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_WEMWBS_5</td>
+<td>thinking clearly</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_WEMWBS_6</td>
+<td>thinking close to other people</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_WEMWBS_7</td>
+<td>able to make up my own mind about things</td>
+</tr>
+<tr class="odd">
+<td>DV_MALAISE</td>
+<td>CW1_MALAISE_1</td>
+<td>feel tired most of the time</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_2</td>
+<td>feel miserable or depressed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_3</td>
+<td>get worried about things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_4</td>
+<td>get in a violent rage</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_5</td>
+<td>suddenly become scared for no good reason</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_6</td>
+<td>easily upset or irritated</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_7</td>
+<td>constantly keyed up and jittery</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_MALAISE_8</td>
+<td>every little thing get on your nerves and wear you out</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_MALAISE_9</td>
+<td>heart often race like mad</td>
+</tr>
+<tr class="even">
+<td>DV_GHQ</td>
+<td>CW1_GHQ121</td>
+<td>able to concentrate</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ122</td>
+<td>lost much sleep over worry</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ123</td>
+<td>felt that playing a useful part in things</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ124</td>
+<td>felt capable of making decisions about things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ125</td>
+<td>felt constantly under strain</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ126</td>
+<td>couldn’t overcome difficulties</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ127</td>
+<td>able to enjoy normal day to day activities</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ128</td>
+<td>able to face up to problems</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ129</td>
+<td>feeling unhappy or depressed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ1210</td>
+<td>losing confidence in self</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GHQ1211</td>
+<td>thinking of self as a worthless person</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GHQ1212</td>
+<td>feeling reasonably happy</td>
+</tr>
+<tr class="even">
+<td>DV_GAD</td>
+<td>CW1_GAD2PHQ2_1</td>
+<td>Feeling Nervous, Anxious Or On Edge</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GAD2PHQ2_2</td>
+<td>Not Being Able To Stop Or Control Worrying</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_GAD2PHQ2_3</td>
+<td>Little Interest Or Pleasure In Doing Things</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_GAD2PHQ2_4</td>
+<td>Feeling Down, Depressed Or Hopeless</td>
+</tr>
+<tr class="even">
+<td>DV_RPTT</td>
+<td>CW1_RISK</td>
+<td>willingness to take risks from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_PATIENT</td>
+<td>how patient Respondent is from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW1_TRUST</td>
+<td>how trusting of others from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW1_TRUSTPOLP</td>
+<td>how trusting of Govmnt from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+</tbody>
+</table>
+<p>Select rows from the Wave 1 dataset</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: "hide"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01 <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    NCDSID, BCSID,NSID, MCSID, CW1_PSEX,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matches</span>(<span class="st">"^CW1_LLI_([1-9]|1[0-7])$"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matches</span>(<span class="st">"^CW1_LONELY_([1-4])$"</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    CW1_PHDE, CW1_PHHO, CW1_PHRF, CW1_PHEE, CW1_PHWO, CW1_PHNE,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    CW1_HARM,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matches</span>(<span class="st">"^CW1_WEMWBS_([1-7])$"</span>),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matches</span>(<span class="st">"^CW1_MALAISE_([1-9]|1[0-9])$"</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matches</span>(<span class="st">"^CW1_GHQ12([1-9]|1[0-2])$"</span>),</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matches</span>(<span class="st">"^CW1_GAD2PHQ2_([1-4])$"</span>),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    CW1_RISK, CW1_PATIENT, CW1_TRUST, CW1_TRUSTPOLP</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wave-2" class="level4">
+<h4 class="anchored" data-anchor-id="wave-2">Wave 2</h4>
+<p><strong>Wave 2</strong> Variable Table</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Variable Acronym</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demo</td>
+<td>CW2_PSEX</td>
+<td>Sex of Respondent</td>
+</tr>
+<tr class="even">
+<td>DV_WEMWBS</td>
+<td>CW2_WEMWBS_1</td>
+<td>feeling optimistic about the future</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_WEMWBS_2</td>
+<td>feeling useful</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_WEMWBS_3</td>
+<td>feeling relaxed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_WEMWBS_4</td>
+<td>dealing with problems well</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_WEMWBS_5</td>
+<td>thinking clearly</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_WEMWBS_6</td>
+<td>feeling close to other people</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_WEMWBS_7</td>
+<td>able to make up my own mind about things</td>
+</tr>
+<tr class="odd">
+<td>DV_GAD</td>
+<td>CW2_GAD2PHQ2_1</td>
+<td>Feeling Nervous, Anxious Or On Edge</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_GAD2PHQ2_2</td>
+<td>Not Being Able To Stop Or Control Worrying</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_GAD2PHQ2_3</td>
+<td>Little Interest Or Pleasure In Doing Things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_GAD2PHQ2_4</td>
+<td>Feeling Down, Depressed Or Hopeless</td>
+</tr>
+<tr class="odd">
+<td>DV_RPTT</td>
+<td>CW2_RISK</td>
+<td>willingness to take risks from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_PATIENT</td>
+<td>how patient respondent is from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW2_TRUST</td>
+<td>how trusting of others from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW2_TRUSTPOLP</td>
+<td>how trusting of Government from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: "hide"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># select rows from Wave2</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02 <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NCDSID, BCSID,NSID, MCSID, <span class="fu">any_of</span>(<span class="fu">c</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CW2_PSEX"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CW2_PHDE"</span>, <span class="st">"CW2_PHHO"</span>, <span class="st">"CW2_PHRF"</span>, <span class="st">"CW2_PHEE"</span>, <span class="st">"CW2_PHWO"</span>, <span class="st">"CW2_PHNE"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW2_LLI_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">17</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW2_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW2_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW2_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW2_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW2_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CW2_RISK"</span>, <span class="st">"CW2_PATIENT"</span>, <span class="st">"CW2_TRUST"</span>, <span class="st">"CW2_TRUSTPOLP"</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wave-3" class="level4">
+<h4 class="anchored" data-anchor-id="wave-3">Wave 3</h4>
+<p><strong>Wave 3</strong> Variable Table</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Variable Acronym</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demo</td>
+<td>CW3_PSEX</td>
+<td>Sex of Respondent</td>
+</tr>
+<tr class="even">
+<td>DV_WEMWBS</td>
+<td>CW3_WEMWBS_1</td>
+<td>feeling optimistic about the future</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_WEMWBS_2</td>
+<td>feeling useful</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_WEMWBS_3</td>
+<td>feeling relaxed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_WEMWBS_4</td>
+<td>dealing with problems well</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_WEMWBS_5</td>
+<td>thinking clearly</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_WEMWBS_6</td>
+<td>feeling close to other people</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_WEMWBS_7</td>
+<td>able to make up my own mind about things</td>
+</tr>
+<tr class="odd">
+<td>DV_MALAISE</td>
+<td>CW3_MALAISE_1</td>
+<td>feel tired most of the time</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_2</td>
+<td>feel miserable or depressed</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_3</td>
+<td>get worried about things</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_4</td>
+<td>get in a violent rage</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_5</td>
+<td>suddenly become scared for no good reason</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_6</td>
+<td>easily upset or irritated</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_7</td>
+<td>constantly keyed up and jittery</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_MALAISE_8</td>
+<td>every little thing gets on your nerves and wears you out</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_MALAISE_9</td>
+<td>heart often races like mad</td>
+</tr>
+<tr class="even">
+<td>DV_GAD</td>
+<td>CW3_GAD2PHQ2_1</td>
+<td>Feeling Nervous, Anxious Or On Edge</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_GAD2PHQ2_2</td>
+<td>Not Being Able To Stop Or Control Worrying</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_GAD2PHQ2_3</td>
+<td>Little Interest Or Pleasure In Doing Things</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_GAD2PHQ2_4</td>
+<td>Feeling Down, Depressed Or Hopeless</td>
+</tr>
+<tr class="even">
+<td>DV_RPTT</td>
+<td>CW3_RISK</td>
+<td>willingness to take risks from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_PATIENT</td>
+<td>how patient respondent is from 0 (Never) to 10 (Always)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>CW3_TRUST</td>
+<td>how trusting of others from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>CW3_TRUSTPOLP</td>
+<td>how trusting of Government from 0 (Not at all) to 10 (Extremely)</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: "hide"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03 <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(NCDSID, BCSID,NSID, MCSID, <span class="fu">any_of</span>(<span class="fu">c</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CW3_PSEX"</span>, <span class="st">"CW3_PHDE"</span>, <span class="st">"CW3_PHHO"</span>, <span class="st">"CW3_PHRF"</span>, <span class="st">"CW3_PHEE"</span>, <span class="st">"CW3_PHWO"</span>, <span class="st">"CW3_PHNE"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW3_LLI_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">17</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW3_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW3_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW3_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW3_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste0</span>(<span class="st">"CW3_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CW3_RISK"</span>, <span class="st">"CW3_PATIENT"</span>, <span class="st">"CW3_TRUST"</span>, <span class="st">"CW3_TRUSTPOLP"</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="combine-ids-ncdsid-bcsidnsid-mcsid" class="level3">
+<h3 class="anchored" data-anchor-id="combine-ids-ncdsid-bcsidnsid-mcsid">Combine IDs: NCDSID, BCSID,NSID, MCSID</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(NCDSID, BCSID, NSID, MCSID), <span class="sc">~</span> <span class="fu">trimws</span>(.)))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Create a new ID column from the first non-missing, non-blank ID</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">coalesce</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NCDSID, <span class="st">""</span>), </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(BCSID, <span class="st">""</span>), </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NSID, <span class="st">""</span>), </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(MCSID, <span class="st">""</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Filter out rows with no ID at all</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>W01_A <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ID))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(NCDSID, BCSID, NSID, MCSID), <span class="sc">~</span> <span class="fu">trimws</span>(.)))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">coalesce</span>(</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NCDSID, <span class="st">""</span>), </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(BCSID, <span class="st">""</span>), </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NSID, <span class="st">""</span>), </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(MCSID, <span class="st">""</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>W02_A <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ID))</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(NCDSID, BCSID, NSID, MCSID), <span class="sc">~</span> <span class="fu">trimws</span>(.)))</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ID =</span> <span class="fu">coalesce</span>(</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NCDSID, <span class="st">""</span>), </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(BCSID, <span class="st">""</span>), </span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(NSID, <span class="st">""</span>), </span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">na_if</span>(MCSID, <span class="st">""</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>W03_A <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="demographic-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="demographic-exploration">Demographic Exploration</h2>
+<p>Number of participant how completed from Wave 1 to 3 are 11740</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Extract IDs from each wave</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ids_w1 <span class="ot">&lt;-</span> W01_A<span class="sc">$</span>ID</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ids_w2 <span class="ot">&lt;-</span> W02_A<span class="sc">$</span>ID</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ids_w3 <span class="ot">&lt;-</span> W03_A<span class="sc">$</span>ID</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Find common IDs across all three waves</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>common_ids <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(intersect, <span class="fu">list</span>(ids_w1, ids_w2, ids_w3))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Count the number of participants</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11740</code></pre>
+</div>
+</div>
+<p>Subset datasets to only those participants</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>W01_complete <span class="ot">&lt;-</span> W01_A <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ID <span class="sc">%in%</span> common_ids) </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>W02_complete <span class="ot">&lt;-</span> W02_A <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ID <span class="sc">%in%</span> common_ids) </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>W03_complete <span class="ot">&lt;-</span> W03_A <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ID <span class="sc">%in%</span> common_ids) </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Ensure uniqueness before merging</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>W01_clean <span class="ot">&lt;-</span> W01_complete <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">first</span>(<span class="fu">na.omit</span>(.))), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>W02_clean <span class="ot">&lt;-</span> W02_complete <span class="sc">%&gt;%</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">first</span>(<span class="fu">na.omit</span>(.))), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>W03_clean <span class="ot">&lt;-</span> W03_complete <span class="sc">%&gt;%</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">first</span>(<span class="fu">na.omit</span>(.))), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> W01_clean <span class="sc">%&gt;%</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(W02_clean, <span class="at">by =</span> <span class="st">"ID"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(W03_clean, <span class="at">by =</span> <span class="st">"ID"</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(merged_all<span class="sc">$</span>ID)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11740</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(merged_all) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11740</code></pre>
+</div>
+</div>
+<p>Summary of participants with longterm illness in Wave 1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#List the relevant long-term illness variables in Wave 1</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lli_vars <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"CW1_LLI_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">17</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a summary table</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>lli_summary <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Participants =</span> <span class="fu">n</span>(),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">all_of</span>(lli_vars), <span class="sc">~</span> <span class="fu">sum</span>(. <span class="sc">==</span> <span class="st">"Yes"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.names =</span> <span class="st">"n_{.col}"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Rename </span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>summary_out <span class="ot">&lt;-</span> <span class="fu">t</span>(lli_summary)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(summary_out) <span class="ot">&lt;-</span> <span class="fu">recode</span>(</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(summary_out),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_1"</span> <span class="ot">=</span> <span class="st">"Cancer"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_2"</span> <span class="ot">=</span> <span class="st">"Cystic fibrosis"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_3"</span> <span class="ot">=</span> <span class="st">"Asthma"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_4"</span> <span class="ot">=</span> <span class="st">"Chronic Obstructive Pulmonary Disease"</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_5"</span> <span class="ot">=</span> <span class="st">"Wheezy bronchitis"</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_6"</span> <span class="ot">=</span> <span class="st">"Diabetes"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_7"</span> <span class="ot">=</span> <span class="st">"Recurrent backache/prolapsed disc/sciatica/other back problem"</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_8"</span> <span class="ot">=</span> <span class="st">"Problems with hearing"</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_9"</span> <span class="ot">=</span> <span class="st">"High blood pressure"</span>,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_10"</span> <span class="ot">=</span> <span class="st">"Heart disease, congenital or acquired"</span>,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_11"</span> <span class="ot">=</span> <span class="st">"Depression/emotional/nervous/psychiatric probs "</span>,</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_12"</span> <span class="ot">=</span> <span class="st">"Obesity"</span>,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_13"</span> <span class="ot">=</span> <span class="st">"Chronic Obstructive Airways Disease"</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_14"</span> <span class="ot">=</span> <span class="st">"Infection"</span>, </span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_15"</span> <span class="ot">=</span> <span class="st">"HIV/Immunodeficiency "</span>,</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_16"</span> <span class="ot">=</span> <span class="st">"Conditions affecting the brain and nerves"</span>,</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"n_CW1_LLI_17"</span> <span class="ot">=</span> <span class="st">"Any Long Term Illness"</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_out)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                               [,1]
+Total_Participants                                            11740
+Cancer                                                          178
+Cystic fibrosis                                                   0
+Asthma                                                         1374
+Chronic Obstructive Pulmonary Disease                           121
+Wheezy bronchitis                                                54
+Diabetes                                                        498
+Recurrent backache/prolapsed disc/sciatica/other back problem  1449
+Problems with hearing                                           792
+High blood pressure                                            1509
+Heart disease, congenital or acquired                           232
+Depression/emotional/nervous/psychiatric probs                 1379
+Obesity                                                        1040
+Chronic Obstructive Airways Disease                              25
+Infection                                                        89
+HIV/Immunodeficiency                                             69
+Conditions affecting the brain and nerves                       120
+Any Long Term Illness                                          5696</code></pre>
+</div>
+</div>
+<p>Summarise Sex within 2 IV groups</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>summary_gender <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CW1_LLI_17 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Yes"</span>, <span class="st">"No"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CW1_LLI_17, CW1_PSEX, <span class="at">name =</span> <span class="st">"Count"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CW1_LLI_17) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percent =</span> <span class="fu">round</span>(Count <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_LLI_17 =</span> <span class="fu">recode</span>(CW1_LLI_17, <span class="st">"Yes"</span> <span class="ot">=</span> <span class="st">"Any Long Term Illness"</span>, <span class="st">"No"</span> <span class="ot">=</span> <span class="st">"No Long Term Illness"</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_PSEX =</span> <span class="fu">recode</span>(CW1_PSEX, <span class="st">"Male"</span> <span class="ot">=</span> <span class="st">"M"</span>, <span class="st">"Female"</span> <span class="ot">=</span> <span class="st">"F"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  CW1_LLI_17            CW1_PSEX Count Percent
+  &lt;fct&gt;                 &lt;fct&gt;    &lt;int&gt;   &lt;dbl&gt;
+1 No Long Term Illness  M         2151    36.7
+2 No Long Term Illness  F         3710    63.3
+3 Any Long Term Illness M         2183    38.3
+4 Any Long Term Illness F         3513    61.7</code></pre>
+</div>
+</div>
+</section>
+<section id="primary-research-question" class="level2">
+<h2 class="anchored" data-anchor-id="primary-research-question">Primary research question:</h2>
+<p>How does having a long-term illness affect self-reported mental health outcomes during the COVID-19 pandemic, compared to individuals without such conditions?</p>
+<section id="recode-the-questionnaire" class="level3">
+<h3 class="anchored" data-anchor-id="recode-the-questionnaire">Recode the questionnaire:</h3>
+<p>to get total scores of mental health outcomes. If all items of the questionnaire were NA, than the total score is NA.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: "hide"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false </span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. MALAISE</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode Yes/No to 1/0, then sum</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">MALAISE_W1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Yes"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"No"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">MALAISE_W2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)),</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Yes"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"No"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">MALAISE_W3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_MALAISE_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)),</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Yes"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"No"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="co">#2. GAD</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="co">#Recode  Not at all/ Several days/More than half the days/ Nearly every day to 0/1/2/3, then sum</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">GAD_W1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Not at all"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Several days"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"More than half the days"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Nearly every day"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">GAD_W2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Not at all"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Several days"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"More than half the days"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Nearly every day"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">GAD_W3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_GAD2PHQ2_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Not at all"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Several days"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"More than half the days"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Nearly every day"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a><span class="co">#3 RPTT</span></span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a><span class="co"># CW1_RISK: Never\n0, 1, 2, 3,4,5,6,7,8,9,Always\n10 </span></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a><span class="co"># CW1_PATIENT: Never\n0, 1, 2, 3,4,5,6,7,8,9,Always\n10 </span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a><span class="co"># CW1_TRUST: Not at all trusting\n0, 1, 2, 3,4,5,6,7,8,9,Extremely trusting\n10</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a><span class="co"># CW1_TRUSTPOLP: Not at all trusting\n0, 1, 2, 3,4,5,6,7,8,9,Extremely trusting\n10</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_RISK =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>      CW1_RISK <span class="sc">==</span> <span class="st">"Never</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>      CW1_RISK <span class="sc">==</span> <span class="st">"Always</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW1_RISK))</span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_PATIENT =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>      CW1_PATIENT <span class="sc">==</span> <span class="st">"Never</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>      CW1_PATIENT <span class="sc">==</span> <span class="st">"Always</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW1_PATIENT))</span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW2_RISK =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>      CW2_RISK <span class="sc">==</span> <span class="st">"Never</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>      CW2_RISK <span class="sc">==</span> <span class="st">"Always</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW2_RISK))</span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW3_RISK =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>      CW3_RISK <span class="sc">==</span> <span class="st">"Never</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>      CW3_RISK <span class="sc">==</span> <span class="st">"Always</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW3_RISK))</span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW2_PATIENT =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>      CW2_PATIENT <span class="sc">==</span> <span class="st">"Never</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>      CW2_PATIENT <span class="sc">==</span> <span class="st">"Always</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW2_PATIENT))</span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW3_PATIENT =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a>      CW3_PATIENT <span class="sc">==</span> <span class="st">"Never</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>      CW3_PATIENT <span class="sc">==</span> <span class="st">"Always</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW3_PATIENT))</span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There were 4 warnings in `mutate()`.
+The first warning was:
+ℹ In argument: `CW1_RISK = case_when(...)`.
+Caused by warning:
+! NAs introduced by coercion
+ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_TRUST =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      CW1_TRUST <span class="sc">==</span> <span class="st">"Not at all trusting</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      CW1_TRUST <span class="sc">==</span> <span class="st">"Extremely trusting</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW1_TRUST))</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW1_TRUSTPOLP =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>      CW1_TRUSTPOLP <span class="sc">==</span> <span class="st">"Not at all trusting</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>     CW1_TRUSTPOLP<span class="sc">==</span> <span class="st">"Extremely trusting</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW1_TRUSTPOLP))</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW2_TRUST =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>      CW2_TRUST <span class="sc">==</span> <span class="st">"Not at all trusting</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      CW2_TRUST <span class="sc">==</span> <span class="st">"Extremely trusting</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW2_TRUST))</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW3_TRUST =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      CW3_TRUST <span class="sc">==</span> <span class="st">"Not at all trusting</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>      CW3_TRUST <span class="sc">==</span> <span class="st">"Extremely trusting</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW3_TRUST))</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW2_TRUSTPOLP =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>      CW2_TRUSTPOLP <span class="sc">==</span> <span class="st">"Not at all trusting</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>     CW2_TRUSTPOLP<span class="sc">==</span> <span class="st">"Extremely trusting</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW2_TRUSTPOLP))</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">CW3_TRUSTPOLP =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>      CW3_TRUSTPOLP <span class="sc">==</span> <span class="st">"Not at all trusting</span><span class="sc">\n</span><span class="st">0"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>     CW3_TRUSTPOLP<span class="sc">==</span> <span class="st">"Extremely trusting</span><span class="sc">\n</span><span class="st">10"</span> <span class="sc">~</span> <span class="dv">10</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(CW3_TRUSTPOLP))</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There were 4 warnings in `mutate()`.
+The first warning was:
+ℹ In argument: `CW1_TRUST = case_when(...)`.
+Caused by warning:
+! NAs introduced by coercion
+ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">RPTT_W1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">c</span>(CW1_RISK, CW1_PATIENT, CW1_TRUST, CW1_TRUSTPOLP), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(CW1_RISK, CW1_PATIENT, CW1_TRUST, CW1_TRUSTPOLP)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">RPTT_W2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">c</span>(CW2_RISK, CW2_PATIENT, CW2_TRUST, CW2_TRUSTPOLP), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(CW2_RISK, CW2_PATIENT, CW2_TRUST, CW2_TRUSTPOLP)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">RPTT_W3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">c</span>(CW3_RISK, CW3_PATIENT, CW3_TRUST, CW3_TRUSTPOLP), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(CW3_RISK, CW3_PATIENT, CW3_TRUST, CW3_TRUSTPOLP)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="co">#4. Lonely</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lonely_W1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Hardly ever"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Often"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lonely_W2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Hardly ever"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Often"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lonely_W3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_LONELY_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)),</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Hardly ever"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Often"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="co">#5. Kessler </span></span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="co">#CW1_PHDE，CW1_PHHO，CW1_PHRF，CW1_PHEE，CW1_PHWO，CW1_PHNE</span></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">Kessler_W1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"CW1_PHDE"</span>, <span class="st">"CW1_PHHO"</span>, <span class="st">"CW1_PHRF"</span>, <span class="st">"CW1_PHEE"</span>, <span class="st">"CW1_PHWO"</span>, <span class="st">"CW1_PHNE"</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"CW1_PHDE"</span>, <span class="st">"CW1_PHHO"</span>, <span class="st">"CW1_PHRF"</span>, <span class="st">"CW1_PHEE"</span>, <span class="st">"CW1_PHWO"</span>, <span class="st">"CW1_PHNE"</span>)),</span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"All of the time"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Most of the time"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"A little of the time"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"None of the time"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">Kessler_W2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"CW2_PHDE"</span>, <span class="st">"CW2_PHHO"</span>, <span class="st">"CW2_PHRF"</span>, <span class="st">"CW2_PHEE"</span>, <span class="st">"CW2_PHWO"</span>, <span class="st">"CW2_PHNE"</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"CW2_PHDE"</span>, <span class="st">"CW2_PHHO"</span>, <span class="st">"CW2_PHRF"</span>, <span class="st">"CW2_PHEE"</span>, <span class="st">"CW2_PHWO"</span>, <span class="st">"CW2_PHNE"</span>)),</span>
+<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"All of the time"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Most of the time"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"A little of the time"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"None of the time"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">Kessler_W3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"CW3_PHDE"</span>, <span class="st">"CW3_PHHO"</span>, <span class="st">"CW3_PHRF"</span>, <span class="st">"CW3_PHEE"</span>, <span class="st">"CW3_PHWO"</span>, <span class="st">"CW3_PHNE"</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(</span>
+<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a>        <span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"CW3_PHDE"</span>, <span class="st">"CW3_PHHO"</span>, <span class="st">"CW3_PHRF"</span>, <span class="st">"CW3_PHEE"</span>, <span class="st">"CW3_PHWO"</span>, <span class="st">"CW3_PHNE"</span>)),</span>
+<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"All of the time"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb20-105"><a href="#cb20-105" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Most of the time"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb20-106"><a href="#cb20-106" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"A little of the time"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a>          . <span class="sc">==</span> <span class="st">"None of the time"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb20-111"><a href="#cb20-111" aria-hidden="true" tabindex="-1"></a>      ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-112"><a href="#cb20-112" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a><span class="co">#6 WEMWBS</span></span>
+<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a>recode_wemwbs <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb20-119"><a href="#cb20-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb20-120"><a href="#cb20-120" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"All of the time"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"Often"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"Some of the time"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"Rarely"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-124"><a href="#cb20-124" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"None of the time"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-125"><a href="#cb20-125" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-126"><a href="#cb20-126" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-127"><a href="#cb20-127" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-128"><a href="#cb20-128" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb20-129"><a href="#cb20-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-130"><a href="#cb20-130" aria-hidden="true" tabindex="-1"></a>    <span class="at">WEMWBS_W1 =</span> <span class="fu">if_else</span>(</span>
+<span id="cb20-131"><a href="#cb20-131" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)), is.na),</span>
+<span id="cb20-132"><a href="#cb20-132" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_real_</span>,</span>
+<span id="cb20-133"><a href="#cb20-133" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)), recode_wemwbs), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-134"><a href="#cb20-134" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-135"><a href="#cb20-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">WEMWBS_W2 =</span> <span class="fu">if_else</span>(</span>
+<span id="cb20-136"><a href="#cb20-136" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)), is.na),</span>
+<span id="cb20-137"><a href="#cb20-137" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_real_</span>,</span>
+<span id="cb20-138"><a href="#cb20-138" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)), recode_wemwbs), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-139"><a href="#cb20-139" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-140"><a href="#cb20-140" aria-hidden="true" tabindex="-1"></a>    <span class="at">WEMWBS_W3 =</span> <span class="fu">if_else</span>(</span>
+<span id="cb20-141"><a href="#cb20-141" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)), is.na),</span>
+<span id="cb20-142"><a href="#cb20-142" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_real_</span>,</span>
+<span id="cb20-143"><a href="#cb20-143" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_WEMWBS_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)), recode_wemwbs), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-144"><a href="#cb20-144" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-145"><a href="#cb20-145" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-146"><a href="#cb20-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-147"><a href="#cb20-147" aria-hidden="true" tabindex="-1"></a><span class="co">#7 GHQ12  </span></span>
+<span id="cb20-148"><a href="#cb20-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-149"><a href="#cb20-149" aria-hidden="true" tabindex="-1"></a>recode_GHQ <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb20-150"><a href="#cb20-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb20-151"><a href="#cb20-151" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">" Much more than usual"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb20-152"><a href="#cb20-152" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"Rather more than usual"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb20-153"><a href="#cb20-153" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"No more than usual"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb20-154"><a href="#cb20-154" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">==</span> <span class="st">"Not at all"</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb20-155"><a href="#cb20-155" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span></span>
+<span id="cb20-156"><a href="#cb20-156" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-157"><a href="#cb20-157" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-158"><a href="#cb20-158" aria-hidden="true" tabindex="-1"></a>merged_all <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb20-159"><a href="#cb20-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-160"><a href="#cb20-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">GHQ_W1 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-161"><a href="#cb20-161" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-162"><a href="#cb20-162" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW1_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), recode_GHQ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-163"><a href="#cb20-163" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-164"><a href="#cb20-164" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-165"><a href="#cb20-165" aria-hidden="true" tabindex="-1"></a>    <span class="at">GHQ_W2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-166"><a href="#cb20-166" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-167"><a href="#cb20-167" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW2_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), recode_GHQ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-168"><a href="#cb20-168" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-169"><a href="#cb20-169" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-170"><a href="#cb20-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">GHQ_W3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-171"><a href="#cb20-171" aria-hidden="true" tabindex="-1"></a>      <span class="fu">if_all</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), <span class="sc">~</span> <span class="fu">is.na</span>(.x)) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb20-172"><a href="#cb20-172" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(<span class="fu">paste0</span>(<span class="st">"CW3_GHQ12"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), recode_GHQ), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-173"><a href="#cb20-173" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-174"><a href="#cb20-174" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="final-check" class="level3">
+<h3 class="anchored" data-anchor-id="final-check">Final check</h3>
+<p>before running Structural Equation Modeling (SEM)</p>
+<section id="missing-data" class="level4">
+<h4 class="anchored" data-anchor-id="missing-data">Missing data</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sem_vars_W1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"MALAISE_W1"</span>, <span class="st">"GAD_W1"</span>, <span class="st">"RPTT_W1"</span>, <span class="st">"Lonely_W1"</span>, <span class="st">"Kessler_W1"</span>, <span class="st">"WEMWBS_W1"</span>, <span class="st">"GHQ_W1"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(merged_all[sem_vars_W1], <span class="cf">function</span>(x) <span class="fu">mean</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MALAISE_W1     GAD_W1    RPTT_W1  Lonely_W1 Kessler_W1  WEMWBS_W1     GHQ_W1 
+0.40059625 0.04906303 0.04906303 0.04548552 0.76056218 0.76141397 0.88568995 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sem_vars_W2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"MALAISE_W2"</span>, <span class="st">"GAD_W2"</span>, <span class="st">"RPTT_W2"</span>, <span class="st">"Lonely_W2"</span>, <span class="st">"Kessler_W2"</span>, <span class="st">"WEMWBS_W2"</span>, <span class="st">"GHQ_W2"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(merged_all[sem_vars_W2], <span class="cf">function</span>(x) <span class="fu">mean</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MALAISE_W2     GAD_W2    RPTT_W2  Lonely_W2 Kessler_W2  WEMWBS_W2     GHQ_W2 
+0.38023850 0.01465077 0.01584327 0.01320273 0.75187394 0.75247019 0.88100511 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sem_vars_W3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"MALAISE_W3"</span>, <span class="st">"GAD_W3"</span>, <span class="st">"RPTT_W3"</span>, <span class="st">"Lonely_W3"</span>, <span class="st">"Kessler_W3"</span>, <span class="st">"WEMWBS_W3"</span>, <span class="st">"GHQ_W3"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(merged_all[sem_vars_W3], <span class="cf">function</span>(x) <span class="fu">mean</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MALAISE_W3     GAD_W3    RPTT_W3  Lonely_W3 Kessler_W3  WEMWBS_W3     GHQ_W3 
+0.38543441 0.01805792 0.02112436 0.01712095 0.75102215 0.75102215 0.88100511 </code></pre>
+</div>
+</div>
+<p>GHQ_W1–3(88%), Kessler_W1–3(75%), WEMWBS_W1–3(75%) high missing due to only one cohort out of four included these measures. May consider dropping these from the model.</p>
+<p>Exclude who did not report CW1_LLI_17 (any longitudinal disease)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>merged_all<span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(CW1_LLI_17))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="sem-for-all-participant" class="level3">
+<h3 class="anchored" data-anchor-id="sem-for-all-participant">SEM for all participant</h3>
+<ol type="1">
+<li><p>Model fit is poor. -&gt; Dropped RPTT because it is negative and weak (–0.35) → problematic.</p></li>
+<li><p>Model fit is still poor (RMSEA &gt; 0.2 is very high).Latent factors are stable. -&gt; add residual covariances (GAD and LONELY correlated)</p></li>
+<li><p>Model fit is still poor (RMSEA &gt; 0.2). CFI increased. Variables unstable -&gt; dropped residual covariances. Added Time-invariant</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is lavaan 0.6-19
+lavaan is FREE software! Please report any bugs.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>merged_all<span class="sc">$</span>CW1_PSEX <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(merged_all<span class="sc">$</span>CW1_PSEX <span class="sc">==</span> <span class="st">"Female"</span>)  <span class="co"># 1 = Female, 0 = Male</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>long_model_cov <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="st">  # Measurement model</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="st">    MH_W1 =~ GAD_W1 + Lonely_W1 + Kessler_W1 + WEMWBS_W1</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="st">MH_W2 =~ GAD_W2 + Lonely_W2 + Kessler_W2 + WEMWBS_W2</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="st">MH_W3 =~ GAD_W3 + Lonely_W3 + Kessler_W3 + WEMWBS_W3</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="st"> # Time-invariant residual covariances (correlated uniquenesses)</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="st">  GAD_W1 ~~ GAD_W2 + GAD_W3</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="st">  GAD_W2 ~~ GAD_W3</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="st">  Lonely_W1 ~~ Lonely_W2 + Lonely_W3</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="st">  Lonely_W2 ~~ Lonely_W3</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="st">  Kessler_W1 ~~ Kessler_W2 + Kessler_W3</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="st">  Kessler_W2 ~~ Kessler_W3</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="st">  WEMWBS_W1 ~~ WEMWBS_W2 + WEMWBS_W3</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="st">  WEMWBS_W2 ~~ WEMWBS_W3</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="st">  # Latent growth model</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="st">  i =~ 1*MH_W1 + 1*MH_W2 + 1*MH_W3</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="st">  s =~ 0*MH_W1 + 1*MH_W2 + 2*MH_W3</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="st">  # Regress intercept and slope on LLI group</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a><span class="st">  i ~ CW1_LLI_17 + CW1_PSEX</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="st">  s ~ CW1_LLI_17 + CW1_PSEX</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>fit_long_cov <span class="ot">&lt;-</span> <span class="fu">sem</span>(long_model_cov, </span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> merged_all, </span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>                    <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>                    <span class="at">missing =</span> <span class="st">"fiml"</span>)</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_long_cov, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 142 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        55
+
+  Number of observations                         11557
+  Number of missing patterns                        41
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               621.043     562.613
+  Degrees of freedom                                59          59
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.104
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                             60105.311   47371.280
+  Degrees of freedom                                90          90
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.269
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.991       0.989
+  Tucker-Lewis Index (TLI)                       0.986       0.984
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.987
+  Robust Tucker-Lewis Index (TLI)                            0.981
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)            -178614.228 -178614.228
+  Scaling correction factor                                  1.385
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)    -178303.707 -178303.707
+  Scaling correction factor                                  1.240
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                              357338.457  357338.457
+  Bayesian (BIC)                            357742.984  357742.984
+  Sample-size adjusted Bayesian (SABIC)     357568.201  357568.201
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.029       0.027
+  90 Percent confidence interval - lower         0.027       0.025
+  90 Percent confidence interval - upper         0.031       0.029
+  P-value H_0: RMSEA &lt;= 0.050                    1.000       1.000
+  P-value H_0: RMSEA &gt;= 0.080                    0.000       0.000
+                                                                  
+  Robust RMSEA                                               0.049
+  90 Percent confidence interval - lower                     0.045
+  90 Percent confidence interval - upper                     0.053
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.692
+  P-value H_0: Robust RMSEA &gt;= 0.080                         0.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.041       0.041
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  MH_W1 =~                                                              
+    GAD_W1            1.000                               2.297    0.865
+    Lonely_W1         0.606    0.011   53.275    0.000    1.393    0.656
+    Kessler_W1        1.916    0.027   71.493    0.000    4.402    0.926
+    WEMWBS_W1        -1.647    0.032  -52.158    0.000   -3.784   -0.789
+  MH_W2 =~                                                              
+    GAD_W2            1.000                               2.393    0.877
+    Lonely_W2         0.611    0.010   58.236    0.000    1.462    0.673
+    Kessler_W2        1.948    0.025   79.501    0.000    4.663    0.928
+    WEMWBS_W2        -1.590    0.028  -56.532    0.000   -3.806   -0.797
+  MH_W3 =~                                                              
+    GAD_W3            1.000                               2.512    0.879
+    Lonely_W3         0.592    0.010   58.680    0.000    1.486    0.660
+    Kessler_W3        1.986    0.024   83.739    0.000    4.988    0.943
+    WEMWBS_W3        -1.565    0.026  -59.585    0.000   -3.931   -0.809
+  i =~                                                                  
+    MH_W1             1.000                               0.885    0.885
+    MH_W2             1.000                               0.850    0.850
+    MH_W3             1.000                               0.810    0.810
+  s =~                                                                  
+    MH_W1             0.000                               0.000    0.000
+    MH_W2             1.000                               0.203    0.203
+    MH_W3             2.000                               0.387    0.387
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  i ~                                                                   
+    CW1_LLI_17        0.671    0.046   14.657    0.000    0.330    0.165
+    CW1_PSEX          0.876    0.046   19.241    0.000    0.431    0.208
+  s ~                                                                   
+    CW1_LLI_17        0.004    0.021    0.174    0.862    0.008    0.004
+    CW1_PSEX          0.043    0.021    2.066    0.039    0.089    0.043
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+ .GAD_W1 ~~                                                             
+   .GAD_W2            0.467    0.044   10.668    0.000    0.467    0.268
+   .GAD_W3            0.458    0.045   10.170    0.000    0.458    0.252
+ .GAD_W2 ~~                                                             
+   .GAD_W3            0.557    0.047   11.954    0.000    0.557    0.312
+ .Lonely_W1 ~~                                                          
+   .Lonely_W2         1.412    0.042   33.797    0.000    1.412    0.548
+   .Lonely_W3         1.408    0.042   33.311    0.000    1.408    0.520
+ .Lonely_W2 ~~                                                          
+   .Lonely_W3         1.563    0.045   34.960    0.000    1.563    0.576
+ .Kessler_W1 ~~                                                         
+   .Kessler_W2        0.094    0.148    0.638    0.524    0.094    0.028
+   .Kessler_W3        0.117    0.146    0.803    0.422    0.117    0.037
+ .Kessler_W2 ~~                                                         
+   .Kessler_W3        0.271    0.145    1.862    0.063    0.271    0.082
+ .WEMWBS_W1 ~~                                                          
+   .WEMWBS_W2         3.068    0.261   11.753    0.000    3.068    0.361
+   .WEMWBS_W3         2.840    0.228   12.478    0.000    2.840    0.338
+ .WEMWBS_W2 ~~                                                          
+   .WEMWBS_W3         3.190    0.222   14.391    0.000    3.190    0.388
+ .i ~~                                                                  
+   .s                 0.031    0.064    0.479    0.632    0.032    0.032
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .GAD_W1            0.502    0.072    6.968    0.000    0.502    0.189
+   .Lonely_W1         0.895    0.047   18.985    0.000    0.895    0.422
+   .Kessler_W1        2.223    0.148   15.053    0.000    2.223    0.468
+   .WEMWBS_W1        21.084    0.147  143.107    0.000   21.084    4.397
+   .GAD_W2            0.533    0.069    7.777    0.000    0.533    0.195
+   .Lonely_W2         0.842    0.046   18.493    0.000    0.842    0.388
+   .Kessler_W2        1.970    0.145   13.625    0.000    1.970    0.392
+   .WEMWBS_W2        21.110    0.139  152.169    0.000   21.110    4.420
+   .GAD_W3            0.733    0.080    9.152    0.000    0.733    0.257
+   .Lonely_W3         1.173    0.051   22.899    0.000    1.173    0.521
+   .Kessler_W3        2.334    0.168   13.879    0.000    2.334    0.441
+   .WEMWBS_W3        20.252    0.153  132.760    0.000   20.252    4.170
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .GAD_W1            1.773    0.070   25.446    0.000    1.773    0.251
+   .Lonely_W1         2.571    0.053   48.817    0.000    2.571    0.570
+   .Kessler_W1        3.234    0.205   15.793    0.000    3.234    0.143
+   .WEMWBS_W1         8.674    0.397   21.827    0.000    8.674    0.377
+   .GAD_W2            1.713    0.064   26.895    0.000    1.713    0.230
+   .Lonely_W2         2.585    0.054   47.919    0.000    2.585    0.547
+   .Kessler_W2        3.503    0.235   14.936    0.000    3.503    0.139
+   .WEMWBS_W2         8.320    0.345   24.112    0.000    8.320    0.365
+   .GAD_W3            1.862    0.067   27.930    0.000    1.862    0.228
+   .Lonely_W3         2.852    0.055   52.308    0.000    2.852    0.564
+   .Kessler_W3        3.085    0.205   15.041    0.000    3.085    0.110
+   .WEMWBS_W3         8.137    0.268   30.414    0.000    8.137    0.345
+   .MH_W1             1.142    0.119    9.566    0.000    0.216    0.216
+   .MH_W2             1.275    0.071   18.032    0.000    0.223    0.223
+   .MH_W3             1.067    0.127    8.431    0.000    0.169    0.169
+   .i                 3.848    0.137   28.156    0.000    0.930    0.930
+   .s                 0.236    0.058    4.046    0.000    0.998    0.998</code></pre>
+</div>
+</div>
+<p>Interpretation:</p>
+<p>The SEM model demonstrated excellent fit (CFI = 0.989, TLI = 0.984, RMSEA = 0.027, SRMR = 0.041), indicating that the latent structure of mental health across three waves was well captured by the model.</p>
+<p>The intercept of the latent mental health trajectory (<code>i</code>) was significantly predicted by both <strong>long-term illness</strong> (<code>CW1_LLI_17</code>, β = 0.165, <em>p</em> &lt; .001) and <strong>sex</strong> (<code>CW1_PSEX</code>, β = 0.208, <em>p</em> &lt; .001), suggesting that individuals with long-term illnesses and females reported poorer mental health at baseline (higher scores indicate worse mental health).</p>
+<p>For the slope (<code>s</code>), <strong>sex</strong> was a significant predictor (β = 0.043, <em>p</em> = .039), indicating a slightly steeper increase in mental health problems over time among females. However, <strong>long-term illness</strong> was <strong>not</strong> a significant predictor of slope (β = 0.004, <em>p</em> = .862), suggesting that although people with long-term illnesses started worse off, their rate of change over time was similar to others.</p>
+<p>The latent mental health construct was robustly defined by GAD, Kessler, Loneliness (positive loadings), and WEMWBS (negative loadings), across all waves. Stability across timepoints was confirmed by moderate factor loadings and high residual correlations between indicator variables.</p>
+<p>:::</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install package if you havent </span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaanPlot)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create SEM diagram with visual emphasis</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> fit_long_cov,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">coefs =</span> <span class="cn">TRUE</span>,         <span class="co"># Display regression coefficients on the arrows</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">stand =</span> <span class="cn">TRUE</span>,         <span class="co"># Use standardized estimates (so coefficients are on the same scale)</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">covs =</span> <span class="cn">TRUE</span>,          <span class="co"># Show covariances between residuals</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">stars =</span> <span class="st">"regress"</span>,    <span class="co"># Add significance stars to regression paths</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">node_options =</span> <span class="fu">list</span>(</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"box"</span>,            <span class="co"># Variable nodes shown as rectangles</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontname =</span> <span class="st">"Helvetica"</span>,   <span class="co"># Use Helvetica font</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="dv">13</span>,            <span class="co"># Font size for variable labels</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span>            <span class="co"># Blue font color for variable labels</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">edge_options =</span> <span class="fu">list</span>(</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="dv">11</span>,            <span class="co"># Font size for coefficients</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>           <span class="co"># Base color for paths (manual edit needed for highlights)</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">graph_options =</span> <span class="fu">list</span>(</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">rankdir =</span> <span class="st">"LR"</span>            <span class="co"># Layout left-to-right for better readability</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="grViz html-widget html-fill-item" id="htmlwidget-f11563513e3c92cf3cd0" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-f11563513e3c92cf3cd0">{"x":{"diagram":" digraph plot { \n graph [ rankdir = LR ] \n node [ shape = box, fontname = Helvetica, fontsize = 13, color = blue ] \n node [shape = box] \n CW1_LLI_17; CW1_PSEX; GAD_W1; Lonely_W1; Kessler_W1; WEMWBS_W1; GAD_W2; Lonely_W2; Kessler_W2; WEMWBS_W2; GAD_W3; Lonely_W3; Kessler_W3; WEMWBS_W3 \n node [shape = oval] \n MH_W1; MH_W2; MH_W3; i; s \n \n edge [ fontsize = 11, color = black ] \n CW1_LLI_17->i [label = \"0.17***\"] CW1_PSEX->i [label = \"0.21***\"] CW1_LLI_17->s [label = \"0\"] CW1_PSEX->s [label = \"0.04*\"] MH_W1->GAD_W1 [label = \"0.87\"] MH_W1->Lonely_W1 [label = \"0.66\"] MH_W1->Kessler_W1 [label = \"0.93\"] MH_W1->WEMWBS_W1 [label = \"-0.79\"] MH_W2->GAD_W2 [label = \"0.88\"] MH_W2->Lonely_W2 [label = \"0.67\"] MH_W2->Kessler_W2 [label = \"0.93\"] MH_W2->WEMWBS_W2 [label = \"-0.8\"] MH_W3->GAD_W3 [label = \"0.88\"] MH_W3->Lonely_W3 [label = \"0.66\"] MH_W3->Kessler_W3 [label = \"0.94\"] MH_W3->WEMWBS_W3 [label = \"-0.81\"] i->MH_W1 [label = \"0.89\"] i->MH_W2 [label = \"0.85\"] i->MH_W3 [label = \"0.81\"] s->MH_W1 [label = \"NA\"] s->MH_W2 [label = \"0.2\"] s->MH_W3 [label = \"0.39\"] GAD_W2 -> GAD_W1 [label = \"0.27\", dir = \"both\"] GAD_W3 -> GAD_W1 [label = \"0.25\", dir = \"both\"] GAD_W3 -> GAD_W2 [label = \"0.31\", dir = \"both\"] Lonely_W2 -> Lonely_W1 [label = \"0.55\", dir = \"both\"] Lonely_W3 -> Lonely_W1 [label = \"0.52\", dir = \"both\"] Lonely_W3 -> Lonely_W2 [label = \"0.58\", dir = \"both\"] Kessler_W2 -> Kessler_W1 [label = \"0.03\", dir = \"both\"] Kessler_W3 -> Kessler_W1 [label = \"0.04\", dir = \"both\"] Kessler_W3 -> Kessler_W2 [label = \"0.08\", dir = \"both\"] WEMWBS_W2 -> WEMWBS_W1 [label = \"0.36\", dir = \"both\"] WEMWBS_W3 -> WEMWBS_W1 [label = \"0.34\", dir = \"both\"] WEMWBS_W3 -> WEMWBS_W2 [label = \"0.39\", dir = \"both\"] s -> i [label = \"0.03\", dir = \"both\"] CW1_PSEX -> CW1_LLI_17 [label = \"-0.02\", dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="explorational-sem" class="level3">
+<h3 class="anchored" data-anchor-id="explorational-sem">Explorational SEM</h3>
+<ol type="1">
+<li>Exclude participants who have depression or other emotional/nervous/psychiatric probs. Test SEM again. -&gt; dropped GHQ due to low loadings and high residuals</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>merged_all_dep <span class="ot">&lt;-</span> merged_all <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CW1_LLI_11 <span class="sc">!=</span> <span class="st">"Yes"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(CW1_LLI_11))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>long_model_dep <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="st">  # Measurement model</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="st">  MH_W1 =~ GAD_W1 + Lonely_W1 + Kessler_W1 + WEMWBS_W1</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="st">MH_W2 =~ GAD_W2 + Lonely_W2 + Kessler_W2 + WEMWBS_W2</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="st">MH_W3 =~ GAD_W3 + Lonely_W3 + Kessler_W3 + WEMWBS_W3</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="st">#time invariance </span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="st">  GAD_W1 ~~ GAD_W2 + GAD_W3</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="st">  GAD_W2 ~~ GAD_W3</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="st">  Lonely_W1 ~~ Lonely_W2 + Lonely_W3</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="st">  Lonely_W2 ~~ Lonely_W3</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="st">  Kessler_W1 ~~ Kessler_W2 + Kessler_W3</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="st">  Kessler_W2 ~~ Kessler_W3</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="st">  WEMWBS_W1 ~~ WEMWBS_W2 + WEMWBS_W3</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="st">  WEMWBS_W2 ~~ WEMWBS_W3</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="st">  # Latent growth model</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="st">  i =~ 1*MH_W1 + 1*MH_W2 + 1*MH_W3</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="st">  s =~ 0*MH_W1 + 1*MH_W2 + 2*MH_W3</span></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="st">  # Regress intercept and slope on LLI group</span></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="st">  i ~ CW1_LLI_17 + CW1_PSEX</span></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="st">  s ~ CW1_LLI_17 + CW1_PSEX</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>fit_long_dep <span class="ot">&lt;-</span> <span class="fu">sem</span>(long_model_dep, </span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>                    <span class="at">data =</span> merged_all_dep, </span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>                    <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>                    <span class="at">missing =</span> <span class="st">"fiml"</span>)</span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_long_dep, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-19 ended normally after 139 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        55
+
+  Number of observations                         10178
+  Number of missing patterns                        38
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               485.668     436.734
+  Degrees of freedom                                59          59
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.112
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                             45654.375   35236.805
+  Degrees of freedom                                90          90
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.296
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.991       0.989
+  Tucker-Lewis Index (TLI)                       0.986       0.984
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.988
+  Robust Tucker-Lewis Index (TLI)                            0.982
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)            -152367.335 -152367.335
+  Scaling correction factor                                  1.466
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)    -152124.501 -152124.501
+  Scaling correction factor                                  1.283
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                              304844.670  304844.670
+  Bayesian (BIC)                            305242.209  305242.209
+  Sample-size adjusted Bayesian (SABIC)     305067.427  305067.427
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.027       0.025
+  90 Percent confidence interval - lower         0.024       0.023
+  90 Percent confidence interval - upper         0.029       0.027
+  P-value H_0: RMSEA &lt;= 0.050                    1.000       1.000
+  P-value H_0: RMSEA &gt;= 0.080                    0.000       0.000
+                                                                  
+  Robust RMSEA                                               0.044
+  90 Percent confidence interval - lower                     0.040
+  90 Percent confidence interval - upper                     0.049
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.983
+  P-value H_0: Robust RMSEA &gt;= 0.080                         0.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.040       0.040
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  MH_W1 =~                                                              
+    GAD_W1            1.000                               1.875    0.830
+    Lonely_W1         0.642    0.016   40.646    0.000    1.203    0.612
+    Kessler_W1        1.977    0.036   55.278    0.000    3.707    0.900
+    WEMWBS_W1        -1.784    0.041  -43.522    0.000   -3.344   -0.751
+  MH_W2 =~                                                              
+    GAD_W2            1.000                               2.036    0.854
+    Lonely_W2         0.645    0.014   47.558    0.000    1.313    0.648
+    Kessler_W2        2.001    0.032   63.133    0.000    4.074    0.908
+    WEMWBS_W2        -1.659    0.035  -46.753    0.000   -3.377   -0.763
+  MH_W3 =~                                                              
+    GAD_W3            1.000                               2.179    0.857
+    Lonely_W3         0.630    0.013   49.013    0.000    1.372    0.645
+    Kessler_W3        2.035    0.031   66.266    0.000    4.434    0.927
+    WEMWBS_W3        -1.622    0.033  -48.703    0.000   -3.534   -0.777
+  i =~                                                                  
+    MH_W1             1.000                               0.868    0.868
+    MH_W2             1.000                               0.800    0.800
+    MH_W3             1.000                               0.747    0.747
+  s =~                                                                  
+    MH_W1             0.000                               0.000    0.000
+    MH_W2             1.000                               0.246    0.246
+    MH_W3             2.000                               0.460    0.460
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  i ~                                                                   
+    CW1_LLI_17       -0.112    0.041   -2.707    0.007   -0.069   -0.034
+    CW1_PSEX          0.651    0.041   15.829    0.000    0.400    0.195
+  s ~                                                                   
+    CW1_LLI_17        0.045    0.021    2.162    0.031    0.091    0.045
+    CW1_PSEX          0.053    0.021    2.546    0.011    0.106    0.052
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+ .GAD_W1 ~~                                                             
+   .GAD_W2            0.380    0.042    9.133    0.000    0.380    0.244
+   .GAD_W3            0.387    0.043    9.010    0.000    0.387    0.235
+ .GAD_W2 ~~                                                             
+   .GAD_W3            0.481    0.045   10.794    0.000    0.481    0.296
+ .Lonely_W1 ~~                                                          
+   .Lonely_W2         1.300    0.043   30.496    0.000    1.300    0.542
+   .Lonely_W3         1.320    0.043   30.477    0.000    1.320    0.522
+ .Lonely_W2 ~~                                                          
+   .Lonely_W3         1.422    0.045   31.614    0.000    1.422    0.567
+ .Kessler_W1 ~~                                                         
+   .Kessler_W2        0.155    0.156    0.996    0.319    0.155    0.046
+   .Kessler_W3        0.209    0.153    1.371    0.170    0.209    0.065
+ .Kessler_W2 ~~                                                         
+   .Kessler_W3        0.319    0.153    2.083    0.037    0.319    0.095
+ .WEMWBS_W1 ~~                                                          
+   .WEMWBS_W2         3.197    0.291   11.001    0.000    3.197    0.380
+   .WEMWBS_W3         2.940    0.251   11.726    0.000    2.940    0.350
+ .WEMWBS_W2 ~~                                                          
+   .WEMWBS_W3         3.211    0.242   13.259    0.000    3.211    0.392
+ .i ~~                                                                  
+   .s                 0.059    0.054    1.089    0.276    0.074    0.074
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .GAD_W1            1.411    0.067   21.034    0.000    1.411    0.625
+   .Lonely_W1         1.456    0.046   31.977    0.000    1.456    0.741
+   .Kessler_W1        3.995    0.137   29.080    0.000    3.995    0.970
+   .WEMWBS_W1        19.539    0.139  140.076    0.000   19.539    4.390
+   .GAD_W2            1.413    0.065   21.828    0.000    1.413    0.593
+   .Lonely_W2         1.379    0.044   31.105    0.000    1.379    0.681
+   .Kessler_W2        3.737    0.136   27.416    0.000    3.737    0.833
+   .WEMWBS_W2        19.660    0.129  152.287    0.000   19.660    4.440
+   .GAD_W3            1.544    0.078   19.818    0.000    1.544    0.607
+   .Lonely_W3         1.647    0.052   31.811    0.000    1.647    0.774
+   .Kessler_W3        4.028    0.164   24.494    0.000    4.028    0.842
+   .WEMWBS_W3        18.912    0.147  128.678    0.000   18.912    4.159
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .GAD_W1            1.584    0.068   23.386    0.000    1.584    0.311
+   .Lonely_W1         2.414    0.055   43.862    0.000    2.414    0.625
+   .Kessler_W1        3.228    0.215   14.988    0.000    3.228    0.190
+   .WEMWBS_W1         8.626    0.449   19.204    0.000    8.626    0.435
+   .GAD_W2            1.534    0.062   24.877    0.000    1.534    0.270
+   .Lonely_W2         2.382    0.055   43.298    0.000    2.382    0.580
+   .Kessler_W2        3.542    0.255   13.903    0.000    3.542    0.176
+   .WEMWBS_W2         8.201    0.387   21.180    0.000    8.201    0.418
+   .GAD_W3            1.720    0.067   25.808    0.000    1.720    0.266
+   .Lonely_W3         2.643    0.056   47.316    0.000    2.643    0.584
+   .Kessler_W3        3.204    0.224   14.308    0.000    3.204    0.140
+   .WEMWBS_W3         8.186    0.294   27.839    0.000    8.186    0.396
+   .MH_W1             0.864    0.107    8.084    0.000    0.246    0.246
+   .MH_W2             1.110    0.069   16.015    0.000    0.268    0.268
+   .MH_W3             0.827    0.120    6.881    0.000    0.174    0.174
+   .i                 2.545    0.112   22.628    0.000    0.960    0.960
+   .s                 0.250    0.052    4.769    0.000    0.996    0.996</code></pre>
+</div>
+</div>
+<p>After excluding participants with a history of depression, the model still showed excellent fit (CFI = 0.989, TLI = 0.984, RMSEA = 0.025, SRMR = 0.040).</p>
+<p>The pattern of results shifted slightly: <strong>long-term illness</strong> was now <strong>negatively associated</strong> with baseline mental health (β = -0.034, <em>p</em> = .007), meaning that even among those without reported depression, having a long-term illness predicted worse baseline mental health.</p>
+<p>Sex remained a significant predictor of intercept (β = 0.195, <em>p</em> &lt; .001), again suggesting females started with worse mental health. Interestingly, <strong>both long-term illness</strong> (β = 0.045, <em>p</em> = .031) and <strong>sex</strong> (β = 0.052, <em>p</em> = .011) significantly predicted the <strong>slope</strong>, suggesting more pronounced worsening over time in those with long-term illness and in females.</p>
+<p>This indicates that among non-depressed individuals, long-term illness not only affected baseline levels but also predicted a steeper decline in mental health across waves.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavaanPlot</span>(</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> fit_long_dep,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">coefs =</span> <span class="cn">TRUE</span>,         </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stand =</span> <span class="cn">TRUE</span>,         </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">covs =</span> <span class="cn">TRUE</span>,          </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stars =</span> <span class="st">"regress"</span>,    </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">node_options =</span> <span class="fu">list</span>(</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"box"</span>,</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontname =</span> <span class="st">"Helvetica"</span>,</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="dv">13</span>,</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">edge_options =</span> <span class="fu">list</span>(</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="dv">11</span>,</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">graph_options =</span> <span class="fu">list</span>(</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">rankdir =</span> <span class="st">"LR"</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="grViz html-widget html-fill-item" id="htmlwidget-85fffb16e959aec3001c" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-85fffb16e959aec3001c">{"x":{"diagram":" digraph plot { \n graph [ rankdir = LR ] \n node [ shape = box, fontname = Helvetica, fontsize = 13, color = blue ] \n node [shape = box] \n CW1_LLI_17; CW1_PSEX; GAD_W1; Lonely_W1; Kessler_W1; WEMWBS_W1; GAD_W2; Lonely_W2; Kessler_W2; WEMWBS_W2; GAD_W3; Lonely_W3; Kessler_W3; WEMWBS_W3 \n node [shape = oval] \n MH_W1; MH_W2; MH_W3; i; s \n \n edge [ fontsize = 11, color = black ] \n CW1_LLI_17->i [label = \"-0.03**\"] CW1_PSEX->i [label = \"0.2***\"] CW1_LLI_17->s [label = \"0.04*\"] CW1_PSEX->s [label = \"0.05*\"] MH_W1->GAD_W1 [label = \"0.83\"] MH_W1->Lonely_W1 [label = \"0.61\"] MH_W1->Kessler_W1 [label = \"0.9\"] MH_W1->WEMWBS_W1 [label = \"-0.75\"] MH_W2->GAD_W2 [label = \"0.85\"] MH_W2->Lonely_W2 [label = \"0.65\"] MH_W2->Kessler_W2 [label = \"0.91\"] MH_W2->WEMWBS_W2 [label = \"-0.76\"] MH_W3->GAD_W3 [label = \"0.86\"] MH_W3->Lonely_W3 [label = \"0.65\"] MH_W3->Kessler_W3 [label = \"0.93\"] MH_W3->WEMWBS_W3 [label = \"-0.78\"] i->MH_W1 [label = \"0.87\"] i->MH_W2 [label = \"0.8\"] i->MH_W3 [label = \"0.75\"] s->MH_W1 [label = \"NA\"] s->MH_W2 [label = \"0.25\"] s->MH_W3 [label = \"0.46\"] GAD_W2 -> GAD_W1 [label = \"0.24\", dir = \"both\"] GAD_W3 -> GAD_W1 [label = \"0.23\", dir = \"both\"] GAD_W3 -> GAD_W2 [label = \"0.3\", dir = \"both\"] Lonely_W2 -> Lonely_W1 [label = \"0.54\", dir = \"both\"] Lonely_W3 -> Lonely_W1 [label = \"0.52\", dir = \"both\"] Lonely_W3 -> Lonely_W2 [label = \"0.57\", dir = \"both\"] Kessler_W2 -> Kessler_W1 [label = \"0.05\", dir = \"both\"] Kessler_W3 -> Kessler_W1 [label = \"0.07\", dir = \"both\"] Kessler_W3 -> Kessler_W2 [label = \"0.09\", dir = \"both\"] WEMWBS_W2 -> WEMWBS_W1 [label = \"0.38\", dir = \"both\"] WEMWBS_W3 -> WEMWBS_W1 [label = \"0.35\", dir = \"both\"] WEMWBS_W3 -> WEMWBS_W2 [label = \"0.39\", dir = \"both\"] s -> i [label = \"0.07\", dir = \"both\"] CW1_PSEX -> CW1_LLI_17 [label = \"-0.06\", dir = \"both\"]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
