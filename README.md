@@ -37,12 +37,7 @@ Self-reported mental health and well-being, measured using:
 - GHQ12 (General Health Questionnaire)
 
 #### Following Explorations
-Do certain types of long-term illness — especially psychological conditions (e.g. depression, anxiety) compared to physical conditions (e.g. asthma, diabetes, cancer) — have a stronger or different effect on mental health and well-being during the COVID-19 pandemic?
-- Psychological (e.g. depression, anxiety, PTSD)
-- Physical – chronic but stable (e.g. asthma, diabetes)
-- Physical – potentially life-threatening (e.g. cancer)
-- No long-term illness (control group)
-
+Do certain types of long-term illness have a stronger or different effect on mental health and well-being during the COVID-19 pandemic?
 
 ### Rationale
 1. Background
