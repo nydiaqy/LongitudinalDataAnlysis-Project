@@ -69,6 +69,15 @@ Potentially life-threatening physical conditions (e.g., cancer)
 No condition (control)
 This stratified analysis will allow us to examine whether mental health outcomes vary depending on the nature of the long-term illness—an insight that could inform more nuanced interventions and policy responses in future public health crises.
 
+### Limitation
+1. Self-Reported Measures
+All mental health outcomes were based on self-report scales, which may be influenced by subjective bias or momentary emotional states.
+2.Lack of Causal Inference
+Although the longitudinal design helps track change, the observational nature of our data still limits causal conclusions.
+3. Measurement Inconsistency Across Cohorts
+Some mental health scales had substantial missingness because they were only administered in one cohort, which limits comparability and model power.
+4. Confounder only controled for sex
+   
 ### Bibliography
 Clarke, D. M., & Currie, K. C. (2009). Depression, anxiety and their relationship with chronic diseases: A review of the epidemiology, risk and treatment evidence. Medical Journal of Australia, 190(7 Suppl), S54–S60.
 Delamater, A. M., Guzman, A., & Aparicio, K. (2017). Mental health issues in children and adolescents with chronic illness. International Journal of Human Rights in Healthcare, 10(3), 163–173. https://doi.org/10.1108/IJHRH-05-2017-0020
