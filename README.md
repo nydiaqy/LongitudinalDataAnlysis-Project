@@ -4,7 +4,7 @@
 QY: Research Aim
 RQs
 Variable 
-SY: Rational 
+SY: Rationale 
 Hypothesis 
 QY: Collaborative frameworks
 Coding
